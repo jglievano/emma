@@ -1,1 +1,0 @@
-("~/workspace/src/bitbucket.org/jglievano/dotfiles/" "~/workspace/src/github.com/jglievano/emma/")
