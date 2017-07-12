@@ -4,3 +4,5 @@ github.com justbur/emacs-which-key
 github.com bbatsov/projectile
 github.com abo-abo/hydra
 github.com lewang/flx
+github.com jwiegley/use-package
+github.com emacsmirror/diminish

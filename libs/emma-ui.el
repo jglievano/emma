@@ -6,6 +6,9 @@
 ;; No tabs.
 (setq indent-tabs-mode nil)
 
+;; Column number mode.
+(setq column-number-mode t)
+
 (setq inhibit-startup-message t)
 
 (ido-mode 1)
