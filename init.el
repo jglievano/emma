@@ -13,26 +13,17 @@
 ;; Global variables.
 (require 'emma-global-vars)
 
-;; Start evil-mode.
-(add-to-list 'load-path "~/.emacs.d/deps/evil")
-(require 'evil)
-(evil-mode 1)
-(add-to-list 'load-path "~/.emacs.d/deps/evil-leader")
-(require 'evil-leader)
-(global-evil-leader-mode)
+(defun load-dep (dep)
+  (add-to-list 'load-path (expand-file-name dep emma-deps)))
 
-;; Start which-key-mode.
-(add-to-list 'load-path "~/.emacs.d/deps/which-key")
-(require 'which-key)
-(which-key-mode)
-
-;; Start projectile.
-(add-to-list 'load-path "~/.emacs.d/deps/projectile")
-(require 'projectile)
-(projectile-mode)
+;; Load dependencies.
+(require 'emma-dependencies)
 
 ;; UI settings.
 (require 'emma-ui)
+
+;; Keymap.
+(require 'emma-keymap)
 
 ;; TODO: install .emma files.
 
