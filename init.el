@@ -13,23 +13,25 @@
 ;; Global variables.
 (require 'emma-global-vars)
 
-;; UI settings.
-(require 'emma-ui)
 
 ;; Start evil-mode.
-(add-to-list 'load-path "~/.emacs.d/evil")
+(add-to-list 'load-path "~/.emacs.d/deps/evil")
 (require 'evil)
 (evil-mode 1)
-(add-to-list 'load-path "~/.emacs.d/evil-leader")
+(add-to-list 'load-path "~/.emacs.d/deps/evil-leader")
 (require 'evil-leader)
 (global-evil-leader-mode)
 
 ;; Start which-key-mode.
-(add-to-list 'load-path "~/.emacs.d/which-key")
+(add-to-list 'load-path "~/.emacs.d/deps/which-key")
 (require 'which-key)
 (which-key-mode)
 
+;; UI settings.
+(require 'emma-ui)
+
 ;; TODO: install .emma files.
+
 
 ;; Start server.
 (require 'server)
