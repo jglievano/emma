@@ -13,9 +13,6 @@
 ;; Global variables.
 (require 'emma-global-vars)
 
-(defun load-dep (dep)
-  (add-to-list 'load-path (expand-file-name dep emma-deps)))
-
 ;; Load dependencies.
 (require 'emma-dependencies)
 

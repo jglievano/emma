@@ -4,7 +4,7 @@
 (defvar emma-rc-dir (expand-file-name "~/.emma")
   "Emma configuration directory.")
 
-(defvar emma-deps (expand-file-name "deps" user-emacs-directory)
-  "Emma dependency directory.")
+(defvar emma-vendor (expand-file-name "vendor" user-emacs-directory)
+  "Emma vendor directory.")
 
 (provide 'emma-global-vars)
