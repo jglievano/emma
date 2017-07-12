@@ -13,7 +13,6 @@
 ;; Global variables.
 (require 'emma-global-vars)
 
-
 ;; Start evil-mode.
 (add-to-list 'load-path "~/.emacs.d/deps/evil")
 (require 'evil)
