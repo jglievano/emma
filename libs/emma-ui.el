@@ -3,6 +3,9 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
+;; No tabs.
+(setq indent-tabs-mode nil)
+
 (setq inhibit-startup-message t)
 
 (ido-mode 1)

@@ -1,6 +1,13 @@
 (defun load-vendor-dep (dep)
   (add-to-list 'load-path (expand-file-name dep emma-vendor)))
 
+(load-vendor-dep "use-package")
+
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
+
 ;; flx.
 (load-vendor-dep "flx")
 (require 'flx-ido)
@@ -22,6 +29,5 @@
 (load-vendor-dep "projectile")
 (require 'projectile)
 (projectile-mode)
-(autoload 'projectile-find-file "projectile")
 
-(provide 'emma-dependencies)
+(provide 'emma-packages)

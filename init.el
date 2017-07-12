@@ -13,8 +13,8 @@
 ;; Global variables.
 (require 'emma-global-vars)
 
-;; Load dependencies.
-(require 'emma-dependencies)
+;; Load packages.
+(require 'emma-packages)
 
 ;; UI settings.
 (require 'emma-ui)
@@ -29,4 +29,4 @@
 (if (and (fboundp 'server-running-p)
 	 (not (server-running-p)))
     (server-start))
-  
+
