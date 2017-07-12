@@ -2,3 +2,4 @@ github.com emacs-evil/evil
 github.com cofi/evil-leader
 github.com justbur/emacs-which-key
 github.com bbatsov/projectile
+github.com abo-abo/hydra
