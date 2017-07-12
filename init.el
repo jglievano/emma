@@ -27,11 +27,15 @@
 (require 'which-key)
 (which-key-mode)
 
+;; Start projectile.
+(add-to-list 'load-path "~/.emacs.d/deps/projectile")
+(require 'projectile)
+(projectile-mode)
+
 ;; UI settings.
 (require 'emma-ui)
 
 ;; TODO: install .emma files.
-
 
 ;; Start server.
 (require 'server)
