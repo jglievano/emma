@@ -73,6 +73,10 @@
 ;; rust.
 (use-package rust-mode
   :load-path "vendor/rust-mode"
-  :mode "\\.rs\\'")
+  :mode "\\.rs\\'"
+  :init
+  (defun emma-rust-setup ()
+    (setq-local rust-indent-offset 2))
+  (add-hook 'rust-mode-hook #'emma-rust-setup))
 
 (provide 'emma-packages)

@@ -5,6 +5,7 @@
 
 ;; No tabs.
 (setq indent-tabs-mode nil)
+(setq tab-width 2)
 
 ;; Column number mode.
 (setq column-number-mode t)
