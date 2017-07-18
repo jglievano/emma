@@ -70,4 +70,9 @@
   (evil-leader/set-key
     "gs" 'magit-status))
 
+;; rust.
+(use-package rust-mode
+  :load-path "vendor/rust-mode"
+  :mode "\\.rs\\'")
+
 (provide 'emma-packages)
