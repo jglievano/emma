@@ -70,6 +70,11 @@
   (evil-leader/set-key
     "gs" 'magit-status))
 
+;; php.
+(use-package php-mode
+  :load-path "vendor/php-mode"
+  :mode "\\.php\\'")
+
 ;; rust.
 (use-package rust-mode
   :load-path "vendor/rust-mode"
