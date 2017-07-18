@@ -79,4 +79,9 @@
     (setq-local rust-indent-offset 2))
   (add-hook 'rust-mode-hook #'emma-rust-setup))
 
+;; toml.
+(use-package toml-mode
+  :load-path "vendor/toml-mode.el"
+  :mode "\\.toml\\'")
+
 (provide 'emma-packages)
