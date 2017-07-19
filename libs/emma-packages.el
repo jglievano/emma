@@ -55,7 +55,8 @@
   (projectile-mode)
   (which-key-add-key-based-replacements "<SPC> p" "projectile")
   (evil-leader/set-key
-    "pf" 'projectile-find-file))
+    "pf" 'projectile-find-file
+    "pp" 'projectile-switch-project))
 
 ;; magit.
 (use-package magit
@@ -73,7 +74,15 @@
 ;; php.
 (use-package php-mode
   :load-path "vendor/php-mode"
-  :mode "\\.php\\'")
+  :mode "\\.php\\'"
+  :init
+  (defun emma-php-setup ()
+    (setq tab-width 2
+          indent-tabs-mode nil)
+    (set (make-local-variable 'show-trailing-whitespace) t)
+    (add-hook 'before-saving-hook 'delete-trailing-whitespace nil t)
+    (c-set-style "drupal"))
+  (add-hook 'php-mode-hook #'emma-php-setup))
 
 ;; rust.
 (use-package rust-mode
