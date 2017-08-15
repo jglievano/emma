@@ -1,40 +1,75 @@
-;;; init.el
-;;
-;; Copyright (c) 2017 Gabriel Lievano
-;;
-;; Author: J. Gabriel Lievano <gabe@jglievano.com>
+(package-initialize)
 
-(when (version< emacs-version "24.4")
-  (error "Emma requires at least GNU Emacs 24.4. You're running %s"
-	 emacs-version))
+;; Disable window-y UI
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
-(add-to-list 'load-path "~/.emacs.d/libs")
+;; No bell.
+(setq visible-bell 1)
 
-;; Global variables.
-(require 'emma-global-vars)
+;; No startup or splash gimmicks
+(setq inhibit-splash-screen t)
+(setq inhibit-startup-message t)
 
-;; Better defaults...
-;; TODO: move to a library.
+;; 2-space indentation
+(setq indent-tabs-mode nil)
+(setq tab-width 2)
+(setq-default c-basic-offset 2)
+
+;; display column number
+(setq column-number-mode t)
+
+;; better backup
 (setq backup-directory-alist `(("." . "~/.saves")))
 (setq backup-by-copying t
       delete-old-versions 6
       kept-old-versions 2
       version-control t)
 
-;; Load packages.
+;; packages
+(add-to-list 'package-archives
+	     '("org" . "https://orgmode.org/elpa/"))
+(unless package-archive-contents
+  (package-refresh-contents))
+(unless (package-installed-p 'org-plus-contrib)
+  (package-install 'org-plus-contrib))
+
+(mapc #'(lambda (path)
+          (add-to-list 'load-path
+                       (expand-file-name path user-emacs-directory)))
+      '("lisp" "vendor/use-package"))
+(add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/themes"))
+(load-theme 'gruvbox t)
+
 (require 'emma-packages)
 
-;; UI settings.
-(require 'emma-ui)
+;; org-mode
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-cb" 'org-iswitchb)
 
-;; Keymap.
-(require 'emma-keymap)
-
-;; TODO: install .emma files.
+(add-hook 'org-mode-hook 'turn-on-font-lock)
 
 ;; Start server.
 (require 'server)
 (if (and (fboundp 'server-running-p)
-	 (not (server-running-p)))
-    (server-start))
+         (not (server-running-p)))
+  (server-start))
 
+;; <EOF>
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("3f1262dbd56ee3609693b8c6ec31d9ed005eb816699fe9bdc266c952858ed265" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
