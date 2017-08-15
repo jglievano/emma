@@ -20,6 +20,9 @@
 ;; display column number
 (setq column-number-mode t)
 
+;; whitespace-mode
+(require 'whitespace)
+
 ;; better backup
 (setq backup-directory-alist `(("." . "~/.saves")))
 (setq backup-by-copying t
