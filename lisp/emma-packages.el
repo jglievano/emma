@@ -18,14 +18,12 @@
 
 (use-package ace-jump-mode
   :load-path "vendor/ace-jump-mode"
-  :commands ace-jump-mode
-  :config
+  :init
   (define-key global-map (kbd "C-c SPC") 'ace-jump-mode))
 
 (use-package ace-window
   :load-path "vendor/ace-window"
-  :commands ace-window
-  :config
+  :init
   (global-set-key (kbd "M-p") 'ace-window))
 
 (use-package anzu
