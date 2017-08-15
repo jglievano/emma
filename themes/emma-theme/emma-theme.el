@@ -310,7 +310,7 @@
 
    ;; smart-mode-line
 
-   (sml/global (:foreground em-dark3 :inverse-video nil))
+   (sml/global (:foreground em-light3 :inverse-video nil))
    (sml/modes (:foreground em-bright_green))
    (sml/filename (:foreground em-bright_red :weight 'bold))
    (sml/prefix (:foreground em-light1))
