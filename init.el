@@ -45,6 +45,12 @@
 (require 'emma-packages)
 (require 'emma-syntax)
 
+;; lisp
+(autoload 'enable-paredit-mode "paredit"
+  "Turn on pseudo-structural editing on Lisp code." t)
+(add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
+(add-hook 'lisp-mode-hook #'enable-paredit-mode)
+
 ;; themes
 (mapc #'(lambda (path)
           (add-to-list 'custom-theme-load-path

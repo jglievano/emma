@@ -5,6 +5,7 @@
 (load-vendor-dep "dash")
 (load-vendor-dep "diminish")
 (load-vendor-dep "use-package")
+(load-vendor-dep "rich-minority")
 (load-vendor-dep "with-editor")
 
 (eval-when-compile
@@ -60,7 +61,6 @@
     (add-to-list 'Info-directory-list
 		 "~/.emacs.d/vendor/magit/Documentation/")))
 
-;; php.
 (use-package php-mode
   :load-path "vendor/php-mode"
   :mode "\\.php\\'"
@@ -73,7 +73,6 @@
     (c-set-style "drupal"))
   (add-hook 'php-mode-hook #'emma-php-setup))
 
-;; rust.
 (use-package rust-mode
   :load-path "vendor/rust-mode"
   :mode "\\.rs\\'"
@@ -84,12 +83,12 @@
 
 (use-package smart-mode-line
   :load-path "vendor/smart-mode-line"
+  :commands sml/setup
   :init
   (progn
     (setq sml/no-confirm-load-theme t)
     (sml/setup)))
 
-;; toml.
 (use-package toml-mode
   :load-path "vendor/toml-mode.el"
   :mode "\\.toml\\'")
