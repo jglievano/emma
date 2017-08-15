@@ -16,6 +16,18 @@
 (require 'bind-key)
 (require 'with-editor)
 
+(use-package ace-jump-mode
+  :load-path "vendor/ace-jump-mode"
+  :commands ace-jump-mode
+  :config
+  (define-key global-map (kbd "C-c SPC") 'ace-jump-mode))
+
+(use-package ace-window
+  :load-path "vendor/ace-window"
+  :commands ace-window
+  :config
+  (global-set-key (kbd "M-p") 'ace-window))
+
 (use-package anzu
   :load-path "vendor/emacs-anzu"
   :commands global-anzu-mode
