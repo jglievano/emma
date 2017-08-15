@@ -16,27 +16,43 @@
 (require 'bind-key)
 (require 'with-editor)
 
-(use-package autothemer
-  :load-path "vendor/autothemer")
-
 (use-package anzu
   :load-path "vendor/emacs-anzu"
   :commands global-anzu-mode
   :config
   (global-anzu-mode +1))
 
+(use-package autothemer
+  :load-path "vendor/autothemer")
+
 (use-package flx
   :load-path "vendor/flx"
   :init
   (require 'flx-ido))
 
-(use-package which-key
-  :load-path "vendor/which-key"
+(use-package magit
+  :load-path "vendor/magit/lisp"
+  :commands magit-status
   :init
-  (require 'which-key)
-  (which-key-mode)
+  (require 'magit)
+  (with-eval-after-load 'info
+    (info-initialize)
+    (add-to-list 'Info-directory-list
+		 "~/.emacs.d/vendor/magit/Documentation/"))
   :config
-  (setq which-key-idle-delay 0.2))
+  (global-set-key (kbd "C-x g") 'magit-status))
+
+(use-package php-mode
+  :load-path "vendor/php-mode"
+  :mode "\\.php\\'"
+  :init
+  (defun emma-php-setup ()
+    (setq tab-width 2
+          indent-tabs-mode nil)
+    (set (make-local-variable 'show-trailing-whitespace) t)
+    (add-hook 'before-saving-hook 'delete-trailing-whitespace nil t)
+    (c-set-style "drupal"))
+  (add-hook 'php-mode-hook #'emma-php-setup))
 
 (use-package projectile
   :load-path "vendor/projectile"
@@ -52,27 +68,6 @@
   :commands rainbow-delimiters-mode
   :init
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
-
-(use-package magit
-  :load-path "vendor/magit/lisp"
-  :init
-  (require 'magit)
-  (with-eval-after-load 'info
-    (info-initialize)
-    (add-to-list 'Info-directory-list
-		 "~/.emacs.d/vendor/magit/Documentation/")))
-
-(use-package php-mode
-  :load-path "vendor/php-mode"
-  :mode "\\.php\\'"
-  :init
-  (defun emma-php-setup ()
-    (setq tab-width 2
-          indent-tabs-mode nil)
-    (set (make-local-variable 'show-trailing-whitespace) t)
-    (add-hook 'before-saving-hook 'delete-trailing-whitespace nil t)
-    (c-set-style "drupal"))
-  (add-hook 'php-mode-hook #'emma-php-setup))
 
 (use-package rust-mode
   :load-path "vendor/rust-mode"
@@ -93,5 +88,13 @@
 (use-package toml-mode
   :load-path "vendor/toml-mode.el"
   :mode "\\.toml\\'")
+
+(use-package which-key
+  :load-path "vendor/which-key"
+  :init
+  (require 'which-key)
+  (which-key-mode)
+  :config
+  (setq which-key-idle-delay 0.2))
 
 (provide 'emma-packages)
