@@ -38,8 +38,11 @@
 (mapc #'(lambda (path)
           (add-to-list 'load-path
                        (expand-file-name path user-emacs-directory)))
-      '("lisp" "vendor/use-package"))
-(add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/themes"))
+      '("lisp" "vendor/use-package" "themes/emacs-theme-gruvbox"))
+(mapc #'(lambda (path)
+          (add-to-list 'custom-theme-load-path
+                       (expand-file-name path user-emacs-directory)))
+      '("themes/emacs-theme-gruvbox"))
 (load-theme 'gruvbox t)
 
 (require 'emma-packages)
