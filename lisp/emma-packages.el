@@ -44,6 +44,12 @@
   :config
   (projectile-global-mode))
 
+(use-package rainbow-delimiters
+  :load-path "vendor/rainbow-delimiters"
+  :commands rainbow-delimiters-mode
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
 ;; magit.
 (use-package magit
   :load-path "vendor/magit/lisp"
