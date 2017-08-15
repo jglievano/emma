@@ -16,15 +16,11 @@
 (require 'bind-key)
 (require 'with-editor)
 
-(use-package ace-jump-mode
-  :load-path "vendor/ace-jump-mode"
-  :init
-  (define-key global-map (kbd "C-c SPC") 'ace-jump-mode))
-
 (use-package ace-window
   :load-path "vendor/ace-window"
+  :after avy
   :init
-  (global-set-key (kbd "M-p") 'ace-window))
+  (global-set-key (kbd "C-c .") 'ace-window))
 
 (use-package anzu
   :load-path "vendor/emacs-anzu"
@@ -34,6 +30,11 @@
 
 (use-package autothemer
   :load-path "vendor/autothemer")
+
+(use-package avy
+  :load-path "vendor/avy"
+  :init
+  (global-set-key (kbd "C-c ,") 'avy-goto-char-2))
 
 (use-package flx
   :load-path "vendor/flx"
@@ -50,7 +51,7 @@
     (add-to-list 'Info-directory-list
 		 "~/.emacs.d/vendor/magit/Documentation/"))
   :config
-  (global-set-key (kbd "C-x g") 'magit-status))
+  (global-set-key (kbd "C-c g") 'magit-status))
 
 (use-package php-mode
   :load-path "vendor/php-mode"
