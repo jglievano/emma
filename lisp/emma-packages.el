@@ -16,17 +16,20 @@
 (require 'bind-key)
 (require 'with-editor)
 
-;; autothemer
 (use-package autothemer
   :load-path "vendor/autothemer")
 
-;; flx.
+(use-package anzu
+  :load-path "vendor/emacs-anzu"
+  :commands global-anzu-mode
+  :config
+  (global-anzu-mode +1))
+
 (use-package flx
   :load-path "vendor/flx"
   :init
   (require 'flx-ido))
 
-;; which-key-mode.
 (use-package which-key
   :load-path "vendor/which-key"
   :init
@@ -35,7 +38,6 @@
   :config
   (setq which-key-idle-delay 0.2))
 
-;; projectile.
 (use-package projectile
   :load-path "vendor/projectile"
   :diminish projectile-mode
@@ -51,7 +53,6 @@
   :init
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-;; magit.
 (use-package magit
   :load-path "vendor/magit/lisp"
   :init
