@@ -15,6 +15,10 @@
 (require 'bind-key)
 (require 'with-editor)
 
+;; autothemer
+(use-package autothemer
+  :load-path "vendor/autothemer")
+
 ;; flx.
 (use-package flx
   :load-path "vendor/flx"

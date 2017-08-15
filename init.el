@@ -39,13 +39,15 @@
           (add-to-list 'load-path
                        (expand-file-name path user-emacs-directory)))
       '("lisp" "vendor/use-package" "themes/emacs-theme-gruvbox"))
+(require 'emma-packages)
+(require 'emma-syntax)
+
+;; themes
 (mapc #'(lambda (path)
           (add-to-list 'custom-theme-load-path
                        (expand-file-name path user-emacs-directory)))
-      '("themes/emacs-theme-gruvbox"))
-(load-theme 'gruvbox t)
-
-(require 'emma-packages)
+      '("themes/emma-theme"))
+(load-theme 'emma t)
 
 ;; org-mode
 (global-set-key "\C-cl" 'org-store-link)
@@ -62,17 +64,4 @@
   (server-start))
 
 ;; <EOF>
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("3f1262dbd56ee3609693b8c6ec31d9ed005eb816699fe9bdc266c952858ed265" default))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
