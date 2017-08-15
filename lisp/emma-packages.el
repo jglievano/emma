@@ -82,6 +82,13 @@
     (setq-local rust-indent-offset 2))
   (add-hook 'rust-mode-hook #'emma-rust-setup))
 
+(use-package smart-mode-line
+  :load-path "vendor/smart-mode-line"
+  :init
+  (progn
+    (setq sml/no-confirm-load-theme t)
+    (sml/setup)))
+
 ;; toml.
 (use-package toml-mode
   :load-path "vendor/toml-mode.el"

@@ -5,4 +5,5 @@ github.com lewang/flx
 github.com jwiegley/use-package
 github.com emacsmirror/diminish
 github.com greduan/emacs-theme-gruvbox
-github.com fanael/rainbos-delimiters
+github.com fanael/rainbow-delimiters
+github.com malabarba/smart-mode-line
