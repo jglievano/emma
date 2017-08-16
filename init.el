@@ -16,6 +16,7 @@
 (setq indent-tabs-mode nil)
 (setq tab-width 2)
 (setq-default c-basic-offset 2)
+(setq-default css-indent-offset 2)
 
 ;; display column number
 (setq column-number-mode t)
