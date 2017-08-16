@@ -41,6 +41,11 @@
   :init
   (require 'flx-ido))
 
+(use-package go-mode
+  :load-path "vendor/go-mode.el"
+  :mode "\\.go\\'"
+  :interpreter "go")
+
 (use-package magit
   :load-path "vendor/magit/lisp"
   :commands magit-status
