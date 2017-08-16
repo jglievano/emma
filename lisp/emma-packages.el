@@ -79,7 +79,8 @@
   :load-path "vendor/swiper"
   :after counsel
   :diminish ivy-mode
-  :bind (("C-c C-r" . ivy-resume))
+  :bind (("C-c C-r" . ivy-resume)
+	 ("C-x b" . ivy-switch-buffer))
   :config
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t))
