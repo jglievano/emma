@@ -123,6 +123,10 @@
     (setq-local rust-indent-offset 2))
   (add-hook 'rust-mode-hook #'emma-rust-setup))
 
+(use-package scss-mode
+  :load-path "vendor/scss-mode"
+  :mode "\\.scss\\'")
+
 (use-package smart-mode-line
   :load-path "vendor/smart-mode-line"
   :commands sml/setup
