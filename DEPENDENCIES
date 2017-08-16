@@ -16,3 +16,5 @@ github.com purcell/exec-path-from-shell
 github.com flycheck/flycheck
 github.com mooz/js2-mode
 github.com company-mode/company-mode
+github.com joshwnj/json-mode
+github.com fxbois/web-mode

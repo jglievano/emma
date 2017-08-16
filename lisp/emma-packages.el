@@ -65,6 +65,10 @@
   :mode "\\.go\\'"
   :interpreter ("go" . go-mode))
 
+(use-package json-mode
+  :load-path "vendor/json-mode"
+  :mode "\\.json\\'")
+
 (use-package js2-mode
   :load-path "vendor/js-mode"
   :mode "\\.js\\'"
@@ -130,6 +134,23 @@
 (use-package toml-mode
   :load-path "vendor/toml-mode.el"
   :mode "\\.toml\\'")
+
+(use-package web-mode
+  :load-path "vendor/web-mode"
+  :mode (("\\.phtml\\'" . web-mode)
+	 ("\\.tpl\\.php\\'" . web-mode)
+	 ("\\.[agj]sp\\'" . web-mode)
+	 ("\\.as[cp]x\\'" . web-mode)
+	 ("\\.erb\\'" . web-mode)
+	 ("\\.mustache\\'" . web-mode)
+	 ("\\.djhtml\\'" . web-mode)
+	 ("\\.html?\\'" . web-mode))
+  :config
+  (defun my-web-mode-hook ()
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 2))
+  (add-hook 'web-mode-hook 'my-web-mode-hook))
 
 (use-package which-key
   :load-path "vendor/which-key"
