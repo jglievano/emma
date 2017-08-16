@@ -71,6 +71,8 @@
 (require 'server)
 (if (and (fboundp 'server-running-p)
          (not (server-running-p)))
-  (server-start))
+    (server-start))
+
+(set-face-attribute 'default nil :height 140 :family "Operator Mono XLight")
 
 ;; <EOF>
