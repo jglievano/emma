@@ -36,6 +36,12 @@
   :init
   (global-set-key (kbd "C-c ,") 'avy-goto-char-2))
 
+(use-package company
+  :load-path "vendor/company-mode"
+  :ensure t
+  :defer t
+  :idle (global-company-mode))
+
 (when (memq window-system '(mac ns x))
   (use-package exec-path-from-shell
     :load-path "vendor/exec-path-from-shell"
