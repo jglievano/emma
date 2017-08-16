@@ -40,6 +40,7 @@
   (use-package exec-path-from-shell
     :load-path "vendor/exec-path-from-shell"
     :commands exec-path-from-shell-initialize
+    :config
     (exec-path-from-shell-initialize)))
 
 (use-package flycheck
@@ -56,7 +57,14 @@
 (use-package go-mode
   :load-path "vendor/go-mode.el"
   :mode "\\.go\\'"
-  :interpreter "go")
+  :interpreter ("go" . go-mode))
+
+(use-package js2-mode
+  :load-path "vendor/js-mode"
+  :mode "\\.js\\'"
+  :interpreter ("node" . js2-mode)
+  :config
+  (add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2))))
 
 (use-package magit
   :load-path "vendor/magit/lisp"
