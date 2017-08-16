@@ -38,9 +38,9 @@
 
 (use-package company
   :load-path "vendor/company-mode"
-  :ensure t
-  :defer t
-  :idle (global-company-mode))
+  :commands global-company-mode
+  :config
+  (global-company-mode))
 
 (when (memq window-system '(mac ns x))
   (use-package exec-path-from-shell
