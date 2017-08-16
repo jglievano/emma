@@ -36,6 +36,12 @@
   :init
   (global-set-key (kbd "C-c ,") 'avy-goto-char-2))
 
+(when (memq window-system '(mac ns x))
+  (use-package exec-path-from-shell
+    :load-path "vendor/exec-path-from-shell"
+    :command exec-path-from-shell-initialize
+    (exec-path-from-shell-initialize)))
+
 (use-package flx
   :load-path "vendor/flx"
   :init
