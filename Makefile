@@ -3,4 +3,4 @@
 setup:
 	git submodule udpate --init --recursive
 	cd vendor/magit/ && make
-	ln -s bin/em ~/bin/em
+	ln -s $(shell pwd)bin/em ~/bin/em
