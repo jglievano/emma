@@ -42,6 +42,16 @@
   :config
   (global-company-mode))
 
+(use-package counsel
+  :load-path "vendor/swiper"
+  :bind (("M-x" . counsel-M-x)
+	 ("C-x C-f" . counsel-find-file)
+	 ("C-c g" . counsel-git)
+	 ("C-c j" . counsel-git-grep)
+	 ("C-c k" . counsel-ag)
+	 ("C-x l" . counsel-locate)
+	 ("C-S-o" . counsel-rhythmbox)))
+
 (when (memq window-system '(mac ns x))
   (use-package exec-path-from-shell
     :load-path "vendor/exec-path-from-shell"
@@ -64,6 +74,15 @@
   :load-path "vendor/go-mode.el"
   :mode "\\.go\\'"
   :interpreter ("go" . go-mode))
+
+(use-package ivy
+  :load-path "vendor/swiper"
+  :after counsel
+  :diminish ivy-mode
+  :bind (("C-c C-r" . ivy-resume))
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t))
 
 (use-package json-mode
   :load-path "vendor/json-mode"
@@ -134,6 +153,12 @@
   (progn
     (setq sml/no-confirm-load-theme t)
     (sml/setup)))
+
+(use-package swiper
+  :load-path "vendor/swiper"
+  :after ivy
+  :bind (("C-s" . swiper)
+	 ("C-r" . swiper)))
 
 (use-package toml-mode
   :load-path "vendor/toml-mode.el"
