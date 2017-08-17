@@ -339,6 +339,13 @@
        :config (global-flycheck-mode))
    #+end_src
 
+* Email
+  #+name: email
+  #+begin_src emacs-lisp
+    (use-package mu4e
+      :load-path "vendor/mu/mu4e")
+  #+end_src
+
 * Version Control
 ** Git
    #+name: version_control
