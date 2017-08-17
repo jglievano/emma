@@ -179,18 +179,18 @@
      (use-package counsel
        :load-path "vendor/swiper"
        :bind (("M-x" . counsel-M-x)
-              ("C-x C-f" . counsel-find-file)
-              ("C-c g" . counsel-git)
+	      ("C-x C-f" . counsel-find-file)
+	      ("C-c g" . counsel-git)
 	      ("C-c j" . counsel-git-grep)
 	      ("C-c k" . counsel-ag)
 	      ("C-x l" . counsel-locate)
-              ("C-S-o" . counsel-rhythmbox)))
+	      ("C-S-o" . counsel-rhythmbox)))
      (use-package ivy
        :load-path "vendor/swiper"
        :after counsel
        :diminish ivy-mode
        :bind (("C-c C-r" . ivy-resume)
-              ("C-x b" . ivy-switch-buffer))
+	      ("C-x b" . ivy-switch-buffer))
        :config
        (setq ivy-use-virtual-buffers t)
        (setq enable-recursive-minibuffers t))
@@ -198,7 +198,7 @@
        :load-path "vendor/swiper"
        :after ivy
        :bind (("C-s" . swiper)
-              ("C-r" . swiper)))
+	      ("C-r" . swiper)))
    #+end_src
 
 ** Better scrolling
