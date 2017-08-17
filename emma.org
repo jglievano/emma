@@ -76,9 +76,9 @@
        :commands sml/setup
        :init
        (progn
-	 (setq sml/no-confirm-load-theme t)
-	 (sml/setup)
-	 (sml/apply-theme 'dark)))
+         (setq sml/no-confirm-load-theme t)
+         (sml/setup)
+         (sml/apply-theme 'dark)))
    #+end_src
 
 ** Display column number
@@ -103,8 +103,8 @@
     (setq backup-directory-alist `(("." . "~/.saves")))
     (setq backup-by-copying t
           delete-old-versions 6
-	  kept-old-versions 2
-	  version-control t)
+          kept-old-versions 2
+          version-control t)
   #+end_src
 
 * macOS
@@ -114,8 +114,8 @@
      (if (eq system-type 'darwin)
        (use-package exec-path-from-shell
          :load-path "vendor/exec-path-from-shell"
-	 :commands exec-path-from-shell-initialize
-	 :config (exec-path-from-shell-initialize)))
+         :commands exec-path-from-shell-initialize
+         :config (exec-path-from-shell-initialize)))
    #+end_src
 
 * Formatting and whitespace
@@ -124,7 +124,7 @@
 
   #+name: formatting-n-whitespace
   #+begin_src emacs-lisp
-    (setq indent-tabs-mode nil)
+    (setq-default indent-tabs-mode nil)
     (setq tab-width 2)
     (setq-default c-basic-offset 2)
     (setq-default css-indent-offset 2)
@@ -179,18 +179,18 @@
      (use-package counsel
        :load-path "vendor/swiper"
        :bind (("M-x" . counsel-M-x)
-	      ("C-x C-f" . counsel-find-file)
-	      ("C-c g" . counsel-git)
-	      ("C-c j" . counsel-git-grep)
-	      ("C-c k" . counsel-ag)
-	      ("C-x l" . counsel-locate)
-	      ("C-S-o" . counsel-rhythmbox)))
+              ("C-x C-f" . counsel-find-file)
+              ("C-c g" . counsel-git)
+              ("C-c j" . counsel-git-grep)
+              ("C-c k" . counsel-ag)
+              ("C-x l" . counsel-locate)
+              ("C-S-o" . counsel-rhythmbox)))
      (use-package ivy
        :load-path "vendor/swiper"
        :after counsel
        :diminish ivy-mode
        :bind (("C-c C-r" . ivy-resume)
-	      ("C-x b" . ivy-switch-buffer))
+              ("C-x b" . ivy-switch-buffer))
        :config
        (setq ivy-use-virtual-buffers t)
        (setq enable-recursive-minibuffers t))
@@ -198,17 +198,17 @@
        :load-path "vendor/swiper"
        :after ivy
        :bind (("C-s" . swiper)
-	      ("C-r" . swiper)))
+              ("C-r" . swiper)))
    #+end_src
 
 ** Better scrolling
    #+name: navigation
    #+begin_src emacs-lisp
      (setq redisplay-dont-pause t
-	   scroll-margin 1
-	   scroll-step 1
-	   scroll-conservately 10000
-	   scroll-preserve-screen-position 1)
+           scroll-margin 1
+           scroll-step 1
+           scroll-conservately 10000
+           scroll-preserve-screen-position 1)
    #+end_src
 
 ** Command helper
@@ -254,8 +254,8 @@
        (require 'magit)
        (with-eval-after-load 'info
          (info-initialize)
-	 (add-to-list 'Info-directory-list
-	              "~/.emacs.d/vendor/magit/Documentation/"))
+         (add-to-list 'Info-directory-list
+                      "~/.emacs.d/vendor/magit/Documentation/"))
        :bind ("C-c g" . magit-status))
    #+end_src
 
@@ -306,10 +306,10 @@
        :init
        (defun emma-php-setup ()
          (setq tab-width 2
-	       indent-tabs-mode nil)
-	 (set (make-local-variable 'show-trailing-whitespace) t)
-	 (add-hook 'before-saving-hook 'delete-trailing-whitespace nil t)
-	 (c-set-style "drupal"))
+               indent-tabs-mode nil)
+         (set (make-local-variable 'show-trailing-whitespace) t)
+         (add-hook 'before-saving-hook 'delete-trailing-whitespace nil t)
+         (c-set-style "drupal"))
        (add-hook 'php-mode-hook #'emma-php-setup))
     #+end_src
 
@@ -348,20 +348,17 @@
        :load-path "vendor/web-mode"
        :mode (("\\.phtml\\'" . web-mode)
               ("\\.tpl\\.php\\'" . web-mode)
-	      ("\\.[agj]sp\\'" . web-mode)
-	      ("\\.as[cp]x\\'" . web-mode)
-	      ("\\.erb\\'" . web-mode)
-	      ("\\.mustache\\'" . web-mode)
-	      ("\\.djhtml\\'" . web-mode)
-	      ("\\.html?\\'" . web-mode))
+              ("\\.[agj]sp\\'" . web-mode)
+              ("\\.as[cp]x\\'" . web-mode)
+              ("\\.erb\\'" . web-mode)
+              ("\\.mustache\\'" . web-mode)
+              ("\\.djhtml\\'" . web-mode)
+              ("\\.html?\\'" . web-mode))
        :config
        (defun my-web-mode-hook ()
          (setq web-mode-markup-indent-offset 2)
-	 (setq web-mode-css-indent-offset 2)
-	 (setq web-mode-code-indent-offset 2))
+         (setq web-mode-css-indent-offset 2)
+         (setq web-mode-code-indent-offset 2))
        (add-hook 'web-mode-hook 'my-web-mode-hook))
    #+end_src
-
-
-
 
