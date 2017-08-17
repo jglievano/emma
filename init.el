@@ -1,9 +1,25 @@
+;; Added by package.el. This must come before configurations of
+;; installed packages. Don't delete this line. If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
 (package-initialize)
 
-;; Disable window-y UI
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(add-to-list 'package-archives
+	     '("org" . "https://orgmode.org/elpa/") t)
+(add-to-list 'package-archives
+	     '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
+(unless package-archive-contents
+  (package-refresh-contents))
+
+;; Make sure we're using the latest org-mode.
+(unless (package-installed-p 'org-plus-contrib)
+  (package-install 'org-plus-contrib))
+
+(require 'org)
+(unless (string-match "^9" (org-version))
+  (warn "org-mode is out of date. org-mode >= 9 expected got %s instead"
+	(org-version)))
 
 ;; No bell.
 (setq visible-bell 1)
@@ -18,9 +34,6 @@
 (setq-default c-basic-offset 2)
 (setq-default css-indent-offset 2)
 
-;; display column number
-(setq column-number-mode t)
-
 ;; whitespace-mode
 (require 'whitespace)
 
@@ -31,33 +44,16 @@
       kept-old-versions 2
       version-control t)
 
-;; packages
-(add-to-list 'package-archives
-	     '("org" . "https://orgmode.org/elpa/"))
-(unless package-archive-contents
-  (package-refresh-contents))
-(unless (package-installed-p 'org-plus-contrib)
-  (package-install 'org-plus-contrib))
-
 (mapc #'(lambda (path)
           (add-to-list 'load-path
                        (expand-file-name path user-emacs-directory)))
-      '("lisp" "vendor/use-package" "themes/emacs-theme-gruvbox"))
-(require 'emma-packages)
-(require 'emma-syntax)
+      '("lisp" "vendor/use-package"))
 
 ;; lisp
 (autoload 'enable-paredit-mode "paredit"
   "Turn on pseudo-structural editing on Lisp code." t)
 (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 (add-hook 'lisp-mode-hook #'enable-paredit-mode)
-
-;; themes
-(mapc #'(lambda (path)
-          (add-to-list 'custom-theme-load-path
-                       (expand-file-name path user-emacs-directory)))
-      '("themes/emma-theme"))
-(load-theme 'emma t)
 
 ;; org-mode
 (global-set-key "\C-cl" 'org-store-link)
@@ -74,5 +70,7 @@
     (server-start))
 
 (set-face-attribute 'default nil :height 140 :family "Operator Mono XLight")
+
+(org-babel-load-file "~/.emacs.d/emma.org")
 
 ;; <EOF>

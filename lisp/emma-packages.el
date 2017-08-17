@@ -1,13 +1,3 @@
-(defun load-vendor-dep (dep)
-  (add-to-list 'load-path (expand-file-name dep "~/.emacs.d/vendor")))
-
-(add-to-list 'load-path (expand-file-name "vendor" user-emacs-directory))
-(load-vendor-dep "dash")
-(load-vendor-dep "diminish")
-(load-vendor-dep "use-package")
-(load-vendor-dep "rich-minority")
-(load-vendor-dep "with-editor")
-
 (eval-when-compile
   (require 'use-package))
 (require 'dash)
@@ -27,9 +17,6 @@
   :commands global-anzu-mode
   :config
   (global-anzu-mode +1))
-
-(use-package autothemer
-  :load-path "vendor/autothemer")
 
 (use-package avy
   :load-path "vendor/avy"
@@ -146,14 +133,6 @@
 (use-package scss-mode
   :load-path "vendor/scss-mode"
   :mode "\\.scss\\'")
-
-(use-package smart-mode-line
-  :load-path "vendor/smart-mode-line"
-  :commands sml/setup
-  :init
-  (progn
-    (setq sml/no-confirm-load-theme t)
-    (sml/setup)))
 
 (use-package swiper
   :load-path "vendor/swiper"
