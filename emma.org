@@ -346,7 +346,7 @@
       :load-path "/usr/local/share/emacs/site-lisp/mu/mu4e"
       :config
       (setq mu4e-mu-binary "/usr/local/bin/mu")
-      (setq mu4e-maildir "~/.mail")
+      (setq mu4e-maildir "~/.Maildir")
       (setq mu4e-contexts
             `(,(make-mu4e-context
                 :name "Fastmail"
@@ -372,10 +372,10 @@
                 :vars
                 '((user-mail-address . "jglievano@gmail.com")
                   (user-full-name . "Gabriel Lievano")
-                  (mu4e-sent-folder . "/jglievano-gmail.com/[Gmail].Sent Mail")
-                  (mu4e-drafts-folder . "/jglievano-gmail.com/[Gmail].Drafts")
-                  (mu4e-trash-folder . "/jglievano-gmail.com/[Gmail].Trash")
-                  (mu4e-refile-folder . "/jglievano-gmail.com/[Gmail].Archive"))))))
+                  (mu4e-sent-folder . "/jglievano-gmail.com/Sent")
+                  (mu4e-drafts-folder . "/jglievano-gmail.com/Drafts")
+                  (mu4e-trash-folder . "/jglievano-gmail.com/Trash")
+                  (mu4e-refile-folder . "/jglievano-gmail.com/Archive"))))))
   #+end_src
 
 * Version Control
