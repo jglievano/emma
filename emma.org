@@ -342,7 +342,10 @@
 * Email
   #+name: email
   #+begin_src emacs-lisp
-    (message "Email not setup")
+    (use-package mu4e
+      :load-path "/usr/local/share/emacs/site-lisp/mu/mu4e"
+      :config
+      (setq mu4e-mu-binary "/usr/local/bin/mu"))
   #+end_src
 
 * Version Control
@@ -481,6 +484,8 @@
    #+begin_src emacs-lisp
      (require 'org-agenda)
      (setq org-agenda-span 14)
+     (setq org-agenda-files '("~/Dropbox/org"
+                              "~/GoogleDrive/org"))
      (setq org-directory "~/Dropbox/org")
      (setq org-default-notes-file (concat org-directory "/gtd.org"))
    #+end_src
