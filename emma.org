@@ -99,6 +99,13 @@
   | S-left/right    | jump through all TODO keywords                     |
 
 * Pre-requisites
+** COMMENT Exec path
+   #+name: pre_requisites
+   #+begin_src emacs-lisp
+     (setq exec-path (append exec-path '("~/.homebrew/bin")))
+     (setq exec-path (append exec-path '("/usr/local/bin")))
+   #+end_src
+
 ** Helper functions
    A function to add vendor paths to load-path.
 
@@ -347,6 +354,15 @@
       :config
       (setq mu4e-mu-binary "/usr/local/bin/mu")
       (setq mu4e-maildir "~/.Maildir")
+      (setq message-send-mail-function 'message-send-mail-with-sendmail
+            sendmail-program "msmtp"
+            message-sendmail-envelope-from 'header)
+      (setq mu4e-get-mail-command "/usr/local/bin/offlineimap"
+            mu4e-compose-context-policy 'ask-if-none
+            mu4e-context-policy 'pick-first
+            mu4e-view-show-images t
+            mu4e-view-image-max-width 800
+            user-full-name "Gabriel Lievano")
       (setq mu4e-contexts
             `(,(make-mu4e-context
                 :name "Fastmail"
@@ -357,11 +373,12 @@
                                  (mu4e-message-field msg :maildir))))
                 :vars
                 '((user-mail-address . "gabe@jglievano.com")
-                  (user-full-name . "Gabriel Lievano")
                   (mu4e-sent-folder . "/jglievano-fastmail.com/Sent")
                   (mu4e-drafts-folder . "/jglievano-fastmail.com/Drafts")
                   (mu4e-trash-folder . "/jglievano-fastmail.com/Trash")
-                  (mu4e-refile-folder . "/jglievano-fastmail.com/Archive")))
+                  (mu4e-refile-folder . "/jglievano-fastmail.com/Archive")
+                  (mail-reply-to "gabe@jglievano.com")
+                  (setq message-sendmail-extra-arguments (list "-a" "Fastmail"))))
               ,(make-mu4e-context
                 :name "Gmail"
                 :match-func
@@ -371,11 +388,12 @@
                                  (mu4e-message-field msg :maildir))))
                 :vars
                 '((user-mail-address . "jglievano@gmail.com")
-                  (user-full-name . "Gabriel Lievano")
                   (mu4e-sent-folder . "/jglievano-gmail.com/Sent")
                   (mu4e-drafts-folder . "/jglievano-gmail.com/Drafts")
                   (mu4e-trash-folder . "/jglievano-gmail.com/Trash")
-                  (mu4e-refile-folder . "/jglievano-gmail.com/Archive"))))))
+                  (mu4e-refile-folder . "/jglievano-gmail.com/Archive")
+                  (mail-reply-to "jglievano@gmail.com")
+                  (setq message-sendmail-extra-arguments (list "-a" "Gmail")))))))
   #+end_src
 
 * Version Control
@@ -524,7 +542,7 @@
    #+name: org
    #+begin_src emacs-lisp
      (setq org-todo-keywords
-           '((sequence "NEXT(n)" "WAITING(w@)" "SOMEDAY(s)" "APPT(a)" "|" "DONE(d)")
+           '((sequence "NEXT(n)" "WAIT(w@/!)" "SOMEDAY(s)" "APPT(a)" "|" "DONE(d!)")
              (sequence "|" "CANCELED(c@)" "DELEGATED(d@)")))
 
      (defun my/get-things-done ()
