@@ -249,7 +249,9 @@
    #+end_src
 
 * Navigation
+
 ** Between windows
+
    #+name: navigation
    #+begin_src emacs-lisp
      (use-package ace-window
@@ -259,6 +261,7 @@
    #+end_src
 
 ** Between projects
+
    #+name: navigation
    #+begin_src emacs-lisp
      (use-package projectile
@@ -271,6 +274,7 @@
    #+end_src
 
 ** Within window to location
+
    #+name: navigation
    #+begin_src emacs-lisp
     (use-package avy
@@ -279,6 +283,7 @@
   #+end_src
 
 ** Swiper suite
+
    #+name: navigation
    #+begin_src emacs-lisp
      (use-package counsel
@@ -307,6 +312,7 @@
    #+end_src
 
 ** Better scrolling
+
    #+name: navigation
    #+begin_src emacs-lisp
      (setq redisplay-dont-pause t
@@ -330,6 +336,7 @@
    #+end_src
 
 * Editing
+
 ** Autocompletion
    #+name: editing
    #+begin_src emacs-lisp
@@ -346,6 +353,16 @@
        :load-path "vendor/flycheck"
        :commands global-flycheck-mode
        :config (global-flycheck-mode))
+   #+end_src
+
+* IRC
+
+** Circe
+
+   #+name: irc
+   #+begin_src emacs-lisp
+     (use-package circe
+       :load-path "vendor/circe")
    #+end_src
 
 * Email
