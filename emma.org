@@ -99,9 +99,11 @@
   | S-left/right    | jump through all TODO keywords                     |
 
 * Pre-requisites
-** COMMENT Exec path
+** Exec path
    #+name: pre_requisites
    #+begin_src emacs-lisp
+     (setenv "PATH" (concat (getenv "PATH") ":~/.homebrew/bin"))
+     (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
      (setq exec-path (append exec-path '("~/.homebrew/bin")))
      (setq exec-path (append exec-path '("/usr/local/bin")))
    #+end_src
@@ -357,11 +359,12 @@
       (setq message-send-mail-function 'message-send-mail-with-sendmail
             sendmail-program "msmtp"
             message-sendmail-envelope-from 'header)
-      (setq mu4e-get-mail-command "/usr/local/bin/offlineimap"
+      (setq mu4e-get-mail-command "offlineimap"
             mu4e-compose-context-policy 'ask-if-none
             mu4e-context-policy 'pick-first
             mu4e-view-show-images t
             mu4e-view-image-max-width 800
+            mu4e-index-update-in-background nil
             user-full-name "Gabriel Lievano")
       (setq mu4e-contexts
             `(,(make-mu4e-context
@@ -378,22 +381,7 @@
                   (mu4e-trash-folder . "/jglievano-fastmail.com/Trash")
                   (mu4e-refile-folder . "/jglievano-fastmail.com/Archive")
                   (mail-reply-to "gabe@jglievano.com")
-                  (setq message-sendmail-extra-arguments (list "-a" "Fastmail"))))
-              ,(make-mu4e-context
-                :name "Gmail"
-                :match-func
-                (lambda (msg) (when msg
-                                (string-prefix-p
-                                 "/jglievano-gmail.com"
-                                 (mu4e-message-field msg :maildir))))
-                :vars
-                '((user-mail-address . "jglievano@gmail.com")
-                  (mu4e-sent-folder . "/jglievano-gmail.com/Sent")
-                  (mu4e-drafts-folder . "/jglievano-gmail.com/Drafts")
-                  (mu4e-trash-folder . "/jglievano-gmail.com/Trash")
-                  (mu4e-refile-folder . "/jglievano-gmail.com/Archive")
-                  (mail-reply-to "jglievano@gmail.com")
-                  (setq message-sendmail-extra-arguments (list "-a" "Gmail")))))))
+                  (setq message-sendmail-extra-arguments (list "-a" "Fastmail")))))))
   #+end_src
 
 * Version Control
