@@ -8,8 +8,8 @@
 
    #+name: pre_requisites
    #+begin_src emacs-lisp
-     (setenv "PATH" (concat (getenv "PATH:") (expand-file-name "~/.homebrew/bin")))
-     (setenv "PATH" (concat (getenv "PATH:") (expand-file-name "/usr/local/bin")))
+     (setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/.homebrew/bin")))
+     (setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "/usr/local/bin")))
      (setq exec-path (append exec-path '((expand-file-name "~/.homebrew/bin"))))
      (setq exec-path (append exec-path '("/usr/local/bin")))
    #+end_src
