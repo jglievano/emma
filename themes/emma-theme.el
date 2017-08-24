@@ -408,7 +408,7 @@
    (magit-refname (:foreground em-light4))
    (magit-section-heading (:foreground em-bright_yellow :weight 'bold))
    (magit-section-heading-selection (:foreground em-faded_yellow))
-   (magit-section-highlight (:foreground em-dark1))
+   (magit-section-highlight (:foreground em-light1))
    (magit-sequence-drop (:foreground em-faded_yellow))
    (magit-sequence-head (:foreground em-bright_aqua))
    (magit-sequence-part (:foreground em-bright_yellow))
