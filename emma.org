@@ -2,113 +2,20 @@
 #+author: Gabriel Lievano
 #+email: gabe@jglievano.com
 
-* Keymap
-  This is a list of common keybindings used with Emma.
-
-  | keybinding | description               |
-  |------------+---------------------------|
-  | C-c w      | ace-window                |
-  | C-M-S x    | avy-goto-char-2           |
-  | C-c g      | magit-status              |
-  | C-c C-p f  | projectile-find-file      |
-  | C-c C-p p  | projectile-switch-project |
-  |            |                           |
-
-  The next keybindings are specific to org-mode.
-  | keybindings     | function                                           |
-  |-----------------+----------------------------------------------------|
-  | TAB             | org-cycle                                          |
-  | S-TAB & C-u TAB | org-global-cycle                                   |
-  | C-u C-u TAB     | org-set-startup-visibility                         |
-  | C-u C-u C-u TAB | outline-show-all                                   |
-  | C-c C-r         | org-reveal                                         |
-  | C-c C-k         | outline-show-branches                              |
-  | C-c TAB         | outline-show-children                              |
-  | C-c C-x b       | org-tree-to-indirect-buffer                        |
-  | C-c C-x v       | org-copy-visible                                   |
-  | C-c C-n         | org-next-visible-heading                           |
-  | C-c C-p         | org-previous-visible-heading                       |
-  | C-c C-f         | org-forward-same-level                             |
-  | C-c C-b         | org-backward-same-level                            |
-  | C-c C-u         | outline-up-heading                                 |
-  | C-c C-j         | org-goto                                           |
-  | M-RET           | org-insert-heading                                 |
-  | C-RET           | org-insert-heading-respect-content                 |
-  | M-S-RET         | org-insert-todo-heading                            |
-  | C-S-RET         | org-insert-todo-heading-respect-content            |
-  | M-left          | org-do-promote                                     |
-  | M-right         | org-do-demote                                      |
-  | M-S-left        | org-promote-subtree                                |
-  | M-S-right       | org-demote-subtree                                 |
-  | M-S-up          | org-move-subtree-up                                |
-  | M-S-down        | org-move-subtree-down                              |
-  | M-h             | org-mark-element                                   |
-  | C-c @           | org-mark-subtree                                   |
-  | C-c C-x C-w     | org-cut-subtree                                    |
-  | C-c C-x M-w     | org-copy-subtree                                   |
-  | C-c C-x C-y     | org-paste-subtree                                  |
-  | C-y             | org-yank                                           |
-  | C-c C-x c       | org-clone-subtree-with-time-shift                  |
-  | C-c C-w         | org-refile                                         |
-  | C-c ^           | org-sort                                           |
-  | C-x n s         | org-narrow-to-subtree                              |
-  | C-x n b         | org-narrow-to-block                                |
-  | C-x n w         | widen                                              |
-  | C-c *           | org-toggle-heading                                 |
-  | C-c /           | org-sparse-tree                                    |
-  | C-c / r         | org-occur                                          |
-  | M-g n & M-g M-n | next-error                                         |
-  | M-g p & M-g M-p | previous-error                                     |
-  | M-S-RET         | insert heading with checkbox                       |
-  | S-up/down       | move to previous/next item in list                 |
-  | M-up/down       | move the item including subitems                   |
-  | M-left/right    | decrease/increase indentation of item              |
-  | M-S-left/right  | decrease/increase indentation of item and subitems |
-  | C-c C-c         | toggle state of checkbox                           |
-  | C-c -           | cycle entire list through different bullets        |
-  | C-c C-*         | turn entire list into subtree of current heading   |
-  | S-left/right    | also cycle bullet styles                           |
-  | C-c C-z         | add time-stamped note to LOGBOOK drawer            |
-  | C-c C-x f       | when the cursor is on a footnote, jump to it       |
-  | C-c C-c         | save as above                                      |
-  | C-c '           | edit footnote definition in separate window        |
-  | C-c PIPE        | org-table-create-or-convert-from-region            |
-  | C-c C-c         | org-table-align                                    |
-  | C-c SPC         | org-table-blank-field                              |
-  | TAB             | org-table-next-field                               |
-  | S-TAB           | org-table-previous-field                           |
-  | RET             | org-table-next-row                                 |
-  | M-a             | org-table-beginning-of-field                       |
-  | M-e             | org-table-end-of-field                             |
-  | M-left/right    | org-table-move-column-left/right                   |
-  | M-S-left/right  | org-table-delete/insert-column                     |
-  | M-up/down       | org-table-move-row-up/down                         |
-  | M-S-up          | org-table-kill-row                                 |
-  | M-S-down        | org-table-insert-row                               |
-  | C-c -           | org-table-insert-hline                             |
-  | C-c RET         | org-table-hline-and-move                           |
-  | C-c ^           | org-table-sort-lines                               |
-  | C-c C-x M-w     | org-table-copy-region                              |
-  | C-c C-x C-w     | org-table-cut-region                               |
-  | C-c C-x C-y     | org-table-paste-rectangle                          |
-  | M-RET           | org-table-wrap-region                              |
-  | C-c +           | org-table-sum                                      |
-  | S-RET           | org-table-copy-down                                |
-  | C-u C-u C-c C-t | jumps through different TODO subsets               |
-  | C-S-left/right  | same as above                                      |
-  | S-left/right    | jump through all TODO keywords                     |
-
 * Pre-requisites
-** Exec path
+
+** Paths
+
    #+name: pre_requisites
    #+begin_src emacs-lisp
-     (setenv "PATH" (concat (getenv "PATH") ":~/.homebrew/bin"))
-     (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-     (setq exec-path (append exec-path '("~/.homebrew/bin")))
+     (setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/.homebrew/bin")))
+     (setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "/usr/local/bin")))
+     (setq exec-path (append exec-path '((expand-file-name "~/.homebrew/bin"))))
      (setq exec-path (append exec-path '("/usr/local/bin")))
    #+end_src
 
 ** Helper functions
+
    A function to add vendor paths to load-path.
 
    #+name: pre_requisites
@@ -118,6 +25,7 @@
    #+end_src
 
 ** Required libraries
+
 *** By smart-mode-line
     #+name: pre_requisites
     #+begin_src emacs-lisp
@@ -131,6 +39,7 @@
     #+end_src
 
 ** use-package
+
    Use package is used to install all third-party packages.
 
    #+name: pre_requisites
@@ -199,6 +108,7 @@
    #+end_src
 
 * Startup
+
   Start up as org-mode and without any message.
 
   #+name: startup
@@ -239,6 +149,8 @@
     (setq tab-width 2)
     (setq-default c-basic-offset 2)
     (setq-default css-indent-offset 2)
+    (setq-default sh-basic-offset 2
+                  sh-indentation 2)
     (require 'whitespace)
   #+end_src
 
