@@ -141,7 +141,9 @@
    #+end_src
 
 * Graphics and looks
+
 ** Color theme
+
    Emma uses a theme based on vim's gruvbox. emma-theme is created using
    autothemer.
 
@@ -154,6 +156,7 @@
    #+end_src
 
 ** Font
+
    Emma uses Operator Mono.
 
    #+name: look-and-feel
@@ -162,6 +165,7 @@
    #+end_src
 
 ** Remove Window-y features
+
    Emma does not like Windows-style UI.
 
    #+name: look-and-feel
@@ -172,6 +176,7 @@
    #+end_src
 
 ** smart-mode-line
+
    smart-mode-lines looks much cleaner than the default.
 
    #+name: look-and-feel
@@ -187,6 +192,7 @@
    #+end_src
 
 ** Display column number
+
    #+NAME: look-and-feel
    #+begin_src emacs-lisp
      (setq column-number-mode t)
@@ -427,7 +433,23 @@
   #+end_src
 
 * Programming languages
+  :properties:
+  :category: programming languages
+  :end:
+
+** Shell
+
+   #+name; programming_languages
+   #+begin_src emacs-lisp
+     (use-package conf-mode
+       :mode (("bashrc\\'" . conf-mode)
+              ("offlineimaprc\\'" . conf-mode)
+              ("\\.conf\\'" . conf-mode)))
+   #+end_src
+
+
 ** Go
+
    #+name: programming_languages
    #+begin_src emacs-lisp
      (use-package go-mode
@@ -435,6 +457,7 @@
        :mode "\\.go\\'"
        :interpreter ("go" . go-mode))
    #+end_src
+
 
 ** Json
    #+name: programming_languages
