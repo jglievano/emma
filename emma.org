@@ -172,6 +172,8 @@
 
    #+NAME: navigation
    #+BEGIN_SRC emacs-lisp
+     (use-package s
+       :load-path "vendor/s")
      (use-package ido)
      (use-package ido-completing-read+
        :after ido
