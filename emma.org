@@ -117,10 +117,17 @@
 ** Display column number
 
    #+NAME: look-and-feel
-   #+begin_src emacs-lisp
+   #+BEGIN_SRC emacs-lisp
      (setq column-number-mode t)
-   #+end_src
+   #+END_SRC
 
+** Diminish
+
+   #+NAME: look-and-feel
+   #+BEGIN_SRC emacs-lisp
+     (use-package paredit
+       :diminish paredit-mode)
+   #+END_SRC
 
 * Startup
 
