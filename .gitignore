@@ -10,12 +10,12 @@
 n*~
 \#*
 
-# Undo-tree save-files
 *.~undo-tree
 projectile-bookmarks.eld
 ido.last
 recentf
 auto-save-list/
+bookmarks
 
 # emma
 emma.el
