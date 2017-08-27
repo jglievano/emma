@@ -4,6 +4,14 @@
 
 * Pre-requisites
 
+** Variables
+
+   #+NAME: pre_requisites
+   #+BEGIN_SRC emacs-lisp
+     (defvar em-savefile-dir (expand-file-name "savehist"
+                                               (file-name-directory load-file-name)))
+   #+END_SRC
+
 ** Paths
 
    #+name: pre_requisites
@@ -12,6 +20,8 @@
      (setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "/usr/local/bin")))
      (setq exec-path (append exec-path '((expand-file-name "~/.homebrew/bin"))))
      (setq exec-path (append exec-path '("/usr/local/bin")))
+     (unless (file-exists-p em-savefile-dir)
+       (make-directory em-savefile-dir))
    #+end_src
 
 ** Helper functions
@@ -48,6 +58,7 @@
      (eval-when-compile
        (require 'use-package))
    #+end_src
+
 
 * Graphics and looks
 
@@ -107,6 +118,7 @@
      (setq column-number-mode t)
    #+end_src
 
+
 * Startup
 
   Start up as org-mode and without any message.
@@ -118,7 +130,9 @@
     (setq initial-major-mode 'org-mode)
   #+end_src
 
+
 * Better backup
+
   #+name: backup
   #+begin_src emacs-lisp
     (setq backup-directory-alist `(("." . "~/.saves")))
@@ -128,7 +142,9 @@
           version-control t)
   #+end_src
 
+
 * macOS
+
 ** exec-path-from-shell
    #+name: macos
    #+begin_src emacs-lisp
@@ -139,7 +155,9 @@
          :config (exec-path-from-shell-initialize)))
    #+end_src
 
+
 * Formatting and whitespace
+
 ** 2 spaces, no tabs
   Emma likes 2 spaces and no tabs.
 
@@ -166,6 +184,7 @@
        :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
    #+end_src
 
+
 * Navigation
 
 ** Ido
@@ -175,7 +194,7 @@
      (use-package s
        :load-path "vendor/s")
      (use-package memoize
-       :load-path "vendor/memoize")
+       :load-path "vendor/emacs-memoize")
      (use-package ido)
      (use-package ido-completing-read+
        :after ido
@@ -189,8 +208,8 @@
              ido-create-new-buffer 'always
              ido-use-filename-at-point 'guess
              ido-max-prospects 10
-             ido-save-directory-list-file (expand-file-name "ido.hist"
-                                                            prelude-savefile-dir)
+             ido-save-directory-list-file (expand-file-name
+                                           "ido.hist" em-savefile-dir)
              ido-default-file-method 'selected-window
              ido-auto-merge-work-directories-length -1)
        (ido-mode +1)
@@ -205,7 +224,7 @@
        :bind (("M-x" . smex)
               ("M-X" . smex-major-mode-commands))
        :config
-       (setq smex-save-file (expand-file-name ".smex-items" prelude-savefile-dir))
+       (setq smex-save-file (expand-file-name ".smex-items" em-savefile-dir))
        (smex-initialize))
    #+END_SRC
 
@@ -245,29 +264,13 @@
 
    #+name: navigation
    #+begin_src emacs-lisp
-     ;; (use-package counsel
-     ;;   :load-path "vendor/swiper"
-     ;;   :bind (("M-x" . counsel-M-x)
-     ;;          ("C-x C-f" . counsel-find-file)
-     ;;          ("C-c g" . counsel-git)
-     ;;          ("C-c j" . counsel-git-grep)
-     ;;          ("C-c k" . counsel-ag)
-     ;;          ("C-x l" . counsel-locate)
-     ;;          ("C-S-o" . counsel-rhythmbox)))
-     ;; (use-package ivy
-     ;;   :load-path "vendor/swiper"
-     ;;   :after counsel
-     ;;   :diminish ivy-mode
-     ;;   :bind (("C-c C-r" . ivy-resume)
-     ;;          ("C-x b" . ivy-switch-buffer))
-     ;;   :config
-     ;;   (setq ivy-use-virtual-buffers t)
-     ;;   (setq enable-recursive-minibuffers t))
      (use-package counsel
-       :load-path "vendor/swiper")
+       :load-path "vendor/swiper"
+       :disabled)
      (use-package ivy
        :load-path "vendor/swiper"
        :after counsel
+       :disabled
        :diminish ivy-mode)
      (use-package swiper
        :load-path "vendor/swiper"
@@ -304,6 +307,7 @@
 * Editing
 
 ** Autocompletion
+
    #+name: editing
    #+begin_src emacs-lisp
      (use-package company
@@ -313,6 +317,7 @@
    #+end_src
 
 ** Spellcheck
+
    #+name: editing
    #+begin_src emacs-lisp
      (use-package flycheck
@@ -320,6 +325,7 @@
        :commands global-flycheck-mode
        :config (global-flycheck-mode))
    #+end_src
+
 
 * IRC
 
@@ -331,7 +337,9 @@
        :load-path "vendor/circe")
    #+end_src
 
+
 * Email
+
   #+name: email
   #+begin_src emacs-lisp
     (use-package mu4e
@@ -367,7 +375,9 @@
                   (setq message-sendmail-extra-arguments (list "-a" "Fastmail")))))))
   #+end_src
 
+
 * Version Control
+
 ** Git
    #+name: version_control
    #+begin_src emacs-lisp
@@ -383,7 +393,9 @@
        :bind ("C-c g" . magit-status))
    #+end_src
 
+
 * Lisp
+
   #+name: lisp
   #+begin_src emacs-lisp
     (autoload 'enable-paredit-mode "paredit"
@@ -392,7 +404,9 @@
     (add-hook 'lisp-mode-hook #'enable-paredit-mode)
   #+end_src
 
+
 * Programming languages
+
 ** Go
    #+name: programming_languages
    #+begin_src emacs-lisp
@@ -466,6 +480,7 @@
    #+end_src
 
 ** HTML and friends
+
    #+name: programming_languages
    #+begin_src emacs-lisp
      (use-package web-mode
@@ -485,6 +500,7 @@
          (setq web-mode-code-indent-offset 2))
        (add-hook 'web-mode-hook 'my-web-mode-hook))
    #+end_src
+
 
 * Org
 

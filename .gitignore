@@ -16,6 +16,7 @@ ido.last
 recentf
 auto-save-list/
 bookmarks
+savehist/
 
 # emma
 emma.el
