@@ -178,7 +178,7 @@
        :)
      (use-package flx-ido
        :after ido
-       :load-path "vendor/flx-ido"
+       :load-path "vendor/flx"
        :config
        (setq ido-enable-prefix nil
              ido-enable-flex-matching t
