@@ -168,6 +168,43 @@
 
 * Navigation
 
+** Ido
+
+   #+NAME: navigation
+   #+BEGIN_SRC emacs-lisp
+     (use-package ido)
+     (use-package ido-completing-read+
+       :after ido
+       :)
+     (use-package flx-ido
+       :after ido
+       :load-path "vendor/flx-ido"
+       :config
+       (setq ido-enable-prefix nil
+             ido-enable-flex-matching t
+             ido-create-new-buffer 'always
+             ido-use-filename-at-point 'guess
+             ido-max-prospects 10
+             ido-save-directory-list-file (expand-file-name "ido.hist"
+                                                            prelude-savefile-dir)
+             ido-default-file-method 'selected-window
+             ido-auto-merge-work-directories-length -1)
+       (ido-mode +1)
+       (ido-everywhere +1)
+
+       (flx-ido-mode +1)
+       (setq ido-enable-flex-matching t)
+       (setq ido-use-faces nil))
+
+     (use-package smex
+       :load-path "vendor/smex"
+       :bind (("M-x" . smex)
+              ("M-X" . smex-major-mode-commands))
+       :config
+       (setq smex-save-file (expand-file-name ".smex-items" prelude-savefile-dir))
+       (smex-initialize))
+   #+END_SRC
+
 ** Between windows
 
    #+name: navigation
@@ -204,24 +241,30 @@
 
    #+name: navigation
    #+begin_src emacs-lisp
+     ;; (use-package counsel
+     ;;   :load-path "vendor/swiper"
+     ;;   :bind (("M-x" . counsel-M-x)
+     ;;          ("C-x C-f" . counsel-find-file)
+     ;;          ("C-c g" . counsel-git)
+     ;;          ("C-c j" . counsel-git-grep)
+     ;;          ("C-c k" . counsel-ag)
+     ;;          ("C-x l" . counsel-locate)
+     ;;          ("C-S-o" . counsel-rhythmbox)))
+     ;; (use-package ivy
+     ;;   :load-path "vendor/swiper"
+     ;;   :after counsel
+     ;;   :diminish ivy-mode
+     ;;   :bind (("C-c C-r" . ivy-resume)
+     ;;          ("C-x b" . ivy-switch-buffer))
+     ;;   :config
+     ;;   (setq ivy-use-virtual-buffers t)
+     ;;   (setq enable-recursive-minibuffers t))
      (use-package counsel
-       :load-path "vendor/swiper"
-       :bind (("M-x" . counsel-M-x)
-              ("C-x C-f" . counsel-find-file)
-              ("C-c g" . counsel-git)
-              ("C-c j" . counsel-git-grep)
-              ("C-c k" . counsel-ag)
-              ("C-x l" . counsel-locate)
-              ("C-S-o" . counsel-rhythmbox)))
+       :load-path "vendor/swiper")
      (use-package ivy
        :load-path "vendor/swiper"
        :after counsel
-       :diminish ivy-mode
-       :bind (("C-c C-r" . ivy-resume)
-              ("C-x b" . ivy-switch-buffer))
-       :config
-       (setq ivy-use-virtual-buffers t)
-       (setq enable-recursive-minibuffers t))
+       :diminish ivy-mode)
      (use-package swiper
        :load-path "vendor/swiper"
        :after ivy
@@ -439,7 +482,45 @@
    #+end_src
 
 * Org
+
+** Keybindings
+   :PROPERTIES:
+   :CATEGORY: keybindings
+   :END:
+
+   This keybindings are strongly adapted from [[doc.norang.ca/org-mode.html]].
+
+   | Key     | For                            | Function        | P |
+   |---------+--------------------------------+-----------------+---|
+   |         | <30>                           | <15>            |   |
+   | C-c a   | Agenda                         | org-agenda      | 1 |
+   | C-c b   | Switch to org file             | org-iswitchb    | 1 |
+   |         | Goto currently clocked item    | org-clock-goto  | 1 |
+   | C-c c   | Capture a task                 | org-capture     | 1 |
+   | ?       | Clock in a task (show menu with prefix) | org-clock-in    | 2 |
+   |         | Check mail                     | mu4e            | 2 |
+   | ?-w     | Show todo items for subtree    | em/org-todo     | 2 |
+   | ?-W     | Widen                          | em/widen        | 2 |
+   | ?-c     | Calendar access                | calendar        | 2 |
+   | C-c l   | Store a link for retrieval with C-c C-l | org-store-link  | 2 |
+   | C-'     | Goto next org file in org-agenda-files | org-cycle-agenda-files | 3 |
+   | ?-r     | Boxquote selected region       | boxquote-region | 3 |
+   | ?-t     | Insert inactive timestamp      | em/insert-inactive-timestamp | 3 |
+   | ?-v     | Toggle visible mode            | visible-mode    | 3 |
+   | ?       | Next buffer                    | next-buffer     | 3 |
+   | ?       | Prevoius buffer                | previous-buffer | 3 |
+   | C-x n n | Narrow to region               | narrow-to-region | 3 |
+   | ?-f     | Boxquote insert a file         | boxquote-insert-file | 3 |
+   | ?-I     | Punch clock in                 | em/punch-in     | 3 |
+   | ?-O     | Punch clock out                | em/punch-out    | 3 |
+   | ?-s     | Switch to scratch buffer       | em/switch-to-scratch | 3 |
+   | ?-h     | Hide other tasks               | em/hide-other   | 4 |
+   | ?       | Toggle line truncation/wrap    | em/set-truncate-lines | 4 |
+   | ?-T     | Toggle insert inactive timesetamp | em/toggle-insert-inactive-timestamp | 4 |
+   #+TBLFM: 
+
 ** Global keybindings
+
    #+name: org
    #+begin_src emacs-lisp
      (global-set-key "\C-cl" 'org-store-link)
@@ -450,28 +531,156 @@
      (setq org-support-shift-select 'always)
    #+end_src
 
-** org-agenda
-   #+name: org
-   #+begin_src emacs-lisp
-     (require 'org-agenda)
-     (setq org-agenda-span 14)
-     (setq org-agenda-files '("~/Dropbox/org"
-                              "~/GoogleDrive/org"))
-     (setq org-directory "~/Dropbox/org")
-     (setq org-default-notes-file (concat org-directory "/gtd.org"))
-   #+end_src
+** Custom functions
 
-** Getting things done (GTD)
-   #+name: org
-   #+begin_src emacs-lisp
-     (setq org-todo-keywords
-           '((sequence "NEXT(n)" "WAIT(w@/!)" "SOMEDAY(s)" "APPT(a)" "|" "DONE(d!)")
-             (sequence "|" "CANCELED(c@)" "DELEGATED(d@)")))
-
-     (defun my/get-things-done ()
+   #+NAME: org
+   #+BEGIN_SRC emacs-lisp
+     (defun em/hide-other ()
        (interactive)
-       (find-file "~/Dropbox/org/gtd.org"))
+       (save-excursion
+         (org-back-to-heading 'invisible-ok)
+         (hide-other)
+         (org-cycle)
+         (org-cycle)
+         (org-cycle)))
 
-     (global-set-key "\C-cd" 'my/get-things-done)
-   #+end_src
+     (defun em/switch-to-scratch ()
+       (interactive)
+       (switch-to-buffer "*scratch*"))
 
+     (defun em/org-todo (arg)
+       (interactive "p")
+       (if (equal arg 4)
+           (save-restriction
+             (em/narrow-to-org-subtree)
+             (org-show-todo-tree nil))
+         (em/narrow-to-org-subtree)
+         (org-show-todo-tree nil)))
+
+     (defun em/widen ()
+       (interactive)
+       (if (equal major-mode 'org-agenda-mode)
+           (progn
+             (org-agenda-remove-restriction-lock)
+             (when org-agenda-sticky
+               (org-agenda-redo)))
+         (widen)))
+
+     (defun em/narrow-to-org-subtree ()
+       (widen)
+       (org-narrow-to-subtree)
+       (save-restriction
+         (org-agenda-set-restriction-lock)))
+   #+END_SRC
+
+** Setup
+
+   #+NAME: org
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'org-mode-hook 'turn-on-font-lock)
+     (setq org-use-fast-todo-selection t)
+     (setq org-treat-S-cursor-todo-selection-as-state-change nil)
+     (setq org-support-shift-select 'always)
+     ;; Agenda setup.
+     (require 'org-agenda)
+     (setq org-agenda-files '("~/Dropbox/org"
+                              "~/GoogleDrive/org"
+                              "~/GoogleDrive/org/google"
+                              "~/GoogleDrive/org/google-mobile-ninjas"))
+   #+END_SRC
+
+** TODO keywords
+
+   #+NAME: org
+   #+BEGIN_SRC emacs-lisp
+     (setq org-todo-keywords
+           '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+             (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELED(c@/!)" "PHONE" "MEETING")))
+
+     (setq org-todo-keyword-faces
+           '(("TODO" :foreground "red" :weight bold)
+             ("NEXT" :foreground "blue" :weight bold)
+             ("DONE" :foreground "forest green" :weight bold)
+             ("WAITING" :foreground "orange" :weight bold)
+             ("HOLD" :foreground "magenta" :weight bold)
+             ("CANCELED" :foreground "forest green" :weight bold)
+             ("MEETING" :foreground "forest green" :weight bold)
+             ("PHONE" :foreground "forest green" :weight bold)))
+   #+END_SRC
+
+** TODO state triggers
+
+   #+NAME: org
+   #+BEGIN_SRC emacs-lisp
+     (setq org-todo-state-tags-triggers
+           '(("CANCELED" ("CANCELED" . t))
+             ("WAITING" ("WAITING" . t))
+             ("HOLD" ("WAITING") ("HOLD" . t))
+             (done ("WAITING") ("HOLD"))
+             ("TODO" ("WAITING") ("CANCELED") ("HOLD"))
+             ("NEXT" ("WAITING") ("CANCELED") ("HOLD"))
+             ("DONE" ("WAITING") ("CANCELED") ("HOLD"))))
+   #+END_SRC
+
+** Capture templates
+
+   #+NAME: org
+   #+BEGIN_SRC emacs-lisp
+     (setq org-directory "~/Dropbox/org")
+     (setq org-default-notes-file "~/Dropbox/org/refile.org")
+
+     ;; Use C-c to start capture mode.
+     (global-set-key (kbd "C-c c") 'org-capture)
+
+     ;; Capture templates for: TODO tasks, Notes, Appointments, Phone calls,
+     ;; Meetings, and org-protocol.
+     (setq org-capture-templates
+           '(("t" "todo" entry (file "~/Dropbox/org/refile.org")
+              "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+             ("r" "respond" entry (file "~/Dropbox/org/refile.org")
+              "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+             ("n" "note" entry (file "~/Dropbox/org/refile.org")
+              "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+             ("j" "Journal" entry (file+datetree "~/Dropbox/org/refile.org")
+              "* %?\n%U\n" :clock-in t :clock-resume t)
+             ("w" "org-protocol" entry (file "~/Dropbox/org/refile.org")
+              "* TODO Review %c\n%U\n" :immediate-finish t)
+             ("m" "Meeting" entry (file "~/Dropbox/org/refile.org")
+              "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+             ("p" "Phone call" entry (file "~/Dropbox/org/refile.org")
+              "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+             ("h" "Habit" entry (file "~/Dropbox/org/refile.org")
+              "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")))
+
+     ;; Setup to remove empty LOGBOOK drawers if they occur.
+     (defun em/remove-empty-drawer-on-clock-out ()
+       (interactive)
+       (save-excursion
+         (beginning-of-line 0)
+         (org-remove-empty-drawer-at "LOGBOOK" (point))))
+     (add-hook 'org-clock-out-hook 'em/remove-empty-drawer-on-clock-out 'append)
+   #+END_SRC
+
+** Refile setup
+
+   #+NAME: org
+   #+BEGIN_SRC emacs-lisp
+     (setq org-refile-targets '((nil :maxlevel .9)
+                                (org-agenda-files :maxlevel . 9)))
+     (setq org-refile-use-outline-path t)
+     (setq org-outline-path-complete-in-steps nil)
+     (setq org-refile-allow-creating-parent-nodes 'confirm)
+     (setq org-completion-use-ido t)
+     (setq ido-everywhere t)
+     (setq ido-max-directory-size 100000)
+     (ido-mode 'both)
+     (setq ido-default-file-method 'selected-window)
+     (setq ido-default-buffer-method 'selected-window)
+     (setq org-indirect-buffer-display 'current-window)
+
+     (defun em/verify-refile-target ()
+       "Exclude todo keywords with a done state from refile targets."
+       (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+
+     (setq org-refile-target-verify-function 'em/verify-refile-target)
+   #+END_SRC

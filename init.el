@@ -35,3 +35,4 @@
 (org-babel-load-file "~/.emacs.d/emma.org")
 
 ;; <EOF>
+(put 'narrow-to-region 'disabled nil)
