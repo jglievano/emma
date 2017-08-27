@@ -24,7 +24,7 @@
 (mapc #'(lambda (path)
           (add-to-list 'load-path
                        (expand-file-name path user-emacs-directory)))
-      '("lisp" "vendor/use-package"))
+      '("vendor" "vendor/use-package"))
 
 ;; Start server.
 (require 'server)
