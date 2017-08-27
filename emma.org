@@ -175,7 +175,7 @@
      (use-package ido)
      (use-package ido-completing-read+
        :after ido
-       :)
+       :load-path "vendor/ido-completing-read-plus")
      (use-package flx-ido
        :after ido
        :load-path "vendor/flx"
