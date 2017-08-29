@@ -129,6 +129,7 @@
        :diminish paredit-mode)
    #+END_SRC
 
+
 * Startup
 
   Start up as org-mode and without any message.
@@ -174,7 +175,7 @@
   #+name: formatting-n-whitespace
   #+begin_src emacs-lisp
     (setq-default indent-tabs-mode nil)
-    (setq tab-width 2)
+    (setq-default tab-width 2)
     (setq-default c-basic-offset 2)
     (setq-default css-indent-offset 2)
     (setq-default sh-basic-offset 2
@@ -421,8 +422,22 @@
 
 
 * Programming languages
+  :properties:
+  :category: programming languages
+  :end:
+
+** Shell
+
+   #+name; programming_languages
+   #+begin_src emacs-lisp
+     (use-package conf-mode
+       :mode (("bashrc\\'" . conf-mode)
+              ("offlineimaprc\\'" . conf-mode)
+              ("\\.conf\\'" . conf-mode)))
+   #+end_src
 
 ** Go
+
    #+name: programming_languages
    #+begin_src emacs-lisp
      (use-package go-mode
@@ -430,6 +445,7 @@
        :mode "\\.go\\'"
        :interpreter ("go" . go-mode))
    #+end_src
+
 
 ** Json
    #+name: programming_languages
