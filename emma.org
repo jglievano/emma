@@ -79,7 +79,8 @@ Use package is used to install all third-party packages.
     :config
     (global-evil-surround-mode 1))
   (use-package evil-magit
-    :load-path "vendor/evil-magit")
+    :load-path "vendor/evil-magit"
+    :after magit)
 #+END_SRC
 
 
