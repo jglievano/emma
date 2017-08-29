@@ -1,0 +1,156 @@
+* Key themes
+  
+  The config is set up in key themes.
+
+  To enable all bindings use:
+
+  #+begin_src emacs-lisp
+  (evil-org-set-key-theme '(textobjects insert navigation additional shift todo heading))
+  #+end_src
+
+** Basic
+   These keys are always enabled
+   
+   |-------+-------------------------------+-----------------------------------------|
+   | key   | function                      | explanation                             |
+   |-------+-------------------------------+-----------------------------------------|
+   | =x=   | evil-org-delete-char          | like x but keep tables and tags aligned |
+   | =X=   | evil-org-delete-previous-char | like X but keep tables and tags aligned |
+   | =0=   | evil-org-beginning-of-line    | like 0 but can be special*              |
+   | =$=   | evil-org-end-of-line          | like $ but can be special*              |
+   | =TAB= | org-cycle                     | change folding level of current heading |
+   | =o=   | evil-org-open-below           | like o but continue tables and items*   |
+   | =O=   | evil-org-open-above           | like O but continue tables and items*   |
+   | =(=   | org-forward-sentence          | next cell in table                      |
+   | =)=   | org-backward-sentence         | previous cell in table                  |
+   | ={=   | org-backward-paragraph        | beginning of table                      |
+   | =}=   | org-forward-paragraph         | end of table                            |
+   |-------+-------------------------------+-----------------------------------------|
+   
+   * Set =org-special-ctrl-a/e= to =t= to make =org-beginning-of-line= and =org-end-of-line= ignore leading stars or tags on headings. Repeat to toggle. By default it's set to ~nil~.
+   * The cases in which =o= and =O= should behave special can be controlled using =evil-org-special-o/O=. By default it's set to ~'(table-row item)~.
+
+*** Operators
+    Operators for promoting/demoting headings and items
+
+
+    |-----+----------------------+-------------------------------------|
+    | key | function             | explanation                         |
+    |-----+----------------------+-------------------------------------|
+    | =<= | evil-org-shift-left  | Promote all headings in marked area |
+    | =>= | evil-org-shift-right | Demote all headings in marked area  |
+    |-----+----------------------+-------------------------------------|
+
+    Examples:
+    - =>>= to promote a heading
+    - =>ar= to promote a tree (if text objects are enabled)
+
+    If you want =<= and =>= to promote / demote on a single press, add the following to your org setup:
+
+    #+begin_src emacs-lisp
+    (evil-define-key 'normal evil-org-mode-map
+                     (kbd ">") 'org-meta-right
+                     (kbd "<") 'org-meta-left)
+    #+end_src
+
+    Or enable the additional key binding theme and use M-h and M-l.
+
+** Navigation
+   If you don't want to use hjkl, you can customize =evil-org-movement-bindings=.
+
+   |------+----------------------+-------------------|
+   | key  | function             | explanation       |
+   |------+----------------------+-------------------|
+   | =gh= | org-element-up       | parent of element |
+   | =gj= | org-forward-element  | next element      |
+   | =gk= | org-backward-element | previous element  |
+   | =gl= | org-down-element     | first subelement  |
+   | =gH= | evil-org-top         | top-level heading |
+   |------+----------------------+-------------------|
+
+** Text objects
+   
+   |-------------+-----------------------------------+----------------------------------|
+   | key         | function                          | examples                         |
+   |-------------+-----------------------------------+----------------------------------|
+   | =ae= / =ie= | evil-org-an/inner-object          | link, markup, table cell         |
+   | =aE= / =iE= | evil-org-an/inner-element         | paragraph, code block, table row |
+   | =ar= / =ir= | evil-org-an/inner-greater-element | item list, table                 |
+   | =aR= / =iR= | evil-org-an/inner-subtree         | subtree starting with a header   |
+   |-------------+-----------------------------------+----------------------------------|
+  
+  - =ae/ie= select the smallest object or element at point. Can be repeated to select adjacent objects / elements.
+  - =aE/iE= select the smallest element at point. Elements build up the structure of the document, so there is always an element at any point. Can be repeated to select adjacent elements.
+  - =ar/ir= select smallest element that is a container of other elements. Can be repeated to select greater elements
+    
+  Examples:
+   - =vae= to select a paragraph
+   - =daR= to delete a subtree
+   - =yiR= to yank the contents of a subtree
+
+** Additional
+   If you don't want to use hjkl, you can customize =evil-org-movement-bindings=.
+   If you want to use these bindings even in insert mode, you can customize =evil-org-use-additional-insert=.
+
+   |-------+--------------------+-------------------+-------------------|
+   | key   | function           | On headings       | On tables         |
+   |-------+--------------------+-------------------+-------------------|
+   | =M-h= | org-metaleft       | promote heading   | move column left  |
+   | =M-l= | org-metaright      | demote heading    | move column right |
+   | =M-k= | org-metaup         | move subtree up   | move column up    |
+   | =M-j= | org-metadown       | move subtree down | move column down  |
+   | =M-H= | org-shiftmetaleft  | promote subtree   | delete column     |
+   | =M-L= | org-shiftmetaright | demote subtree    | insert column     |
+   | =M-K= | org-shiftmetaup    | move heading up   | delete row        |
+   | =M-J= | org-shiftmetadown  | move heading down | insert row        |
+   |-------+--------------------+-------------------+-------------------|
+
+** Shift
+   Disabled by default.
+   If you don't want to use hjkl, you can customize =evil-org-movement-bindings=.
+
+   |-----+----------------+--------------------|
+   | key | function       | explanation        |
+   |-----+----------------+--------------------|
+   | =H= | org-shiftleft  | previous todo item |
+   | =L= | org-shiftright | next todo item     |
+   | =J= | org-shiftdown  | decrease priority  |
+   | =K= | org-shiftup    | increase priority  |
+   |-----+----------------+--------------------|
+
+** Todo
+   Disabled by default.
+
+   |-------+---------------------------------------|
+   | key   | function                              |
+   |-------+---------------------------------------|
+   | =t=   | org-todo                              |
+   | =T=   | org-insert-todo-heading nil           |
+   | =M-t= | org-insert-todo-heading+org-metaright |
+   |-------+---------------------------------------|
+  
+** Heading
+   Disabled by default.
+
+   |-------+----------------------------------|
+   | key   | function                         |
+   |-------+----------------------------------|
+   | =O=   | org-insert-heading               |
+   | =M-o= | org-insert-heading+org-metaright |
+   |-------+----------------------------------|
+
+** Commands without default binding
+   These functions don't have any bindings by default. You can bind them under C-c or another leader key. These functions may have a few bugs. Improvements in the form of pull requests
+   are welcome.
+  
+   |----------------------------------------+----------------------------------------|
+   | function                               | explanation                            |
+   |----------------------------------------+----------------------------------------|
+   | evil-org-recompute-clocks (deprecated) | recompute clocks in selection          |
+   | evil-org-open-links                    | opens links in selection               |
+   | evil-org-open-incognito                | open link at point in incognito window |
+   |----------------------------------------+----------------------------------------|
+
+   Recomputing a single clock can also be done with =C-c C-c=. Recomputing all clocks can be done with =org-resolve-clocks=. It's recommended to bind the latter instead.
+   =evil-org-open-links= opens all links in a selection. Use =RET= to open a single link.
+   =evil-org-open-incognito= tries to open a link in a private window.
