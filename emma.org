@@ -472,7 +472,7 @@ Change the directory where backup files are stored and other backup changes.
 
 ** JavaScript
 
-#+NAME: programming_languages
+#+NAME: programming
 #+BEGIN_SRC emacs-lisp
   (use-package js2-mode
     :load-path "vendor/js2-mode"
@@ -480,6 +480,16 @@ Change the directory where backup files are stored and other backup changes.
     :interpreter ("node" . js2-mode)
     :config
     (add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2))))
+#+END_SRC
+
+** Markdown
+
+#+NAME: programming
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+    :load-path "vendor/markdown-mode"
+    :mode (("\\.md\\'" . markdown-mode)
+           ("\\.markdown\\'" . markdown-mode)))
 #+END_SRC
 
 ** PHP
