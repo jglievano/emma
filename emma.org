@@ -63,6 +63,23 @@
    #+end_src
 
 
+* Evil
+
+#+NAME: evil
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :load-path "vendor/evil"
+    :config
+    (evil-mode 1))
+
+  (use-package evil-leader
+    :load-path "vendor/evil-leader"
+    :commands global-evil-leader-mode
+    :config
+    (global-evil-leader-mode))
+#+END_SRC
+
+
 * Graphics and looks
 
 ** Color theme
