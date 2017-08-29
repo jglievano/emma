@@ -49,6 +49,7 @@
        (require 'use-package))
    #+end_src
 
+
 * Graphics and looks
 
 ** Color theme
@@ -107,6 +108,7 @@
      (setq column-number-mode t)
    #+end_src
 
+
 * Startup
 
   Start up as org-mode and without any message.
@@ -146,7 +148,7 @@
   #+name: formatting-n-whitespace
   #+begin_src emacs-lisp
     (setq-default indent-tabs-mode nil)
-    (setq tab-width 2)
+    (setq-default tab-width 2)
     (setq-default c-basic-offset 2)
     (setq-default css-indent-offset 2)
     (setq-default sh-basic-offset 2
