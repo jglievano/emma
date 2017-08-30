@@ -452,15 +452,6 @@ Change the directory where backup files are stored and other backup changes.
     :interpreter ("go" . go-mode))
 #+END_SRC
 
-** Handlebars
-
-#+NAME: programming
-#+BEGIN_SRC emacs-lisp
-  (use-package handlebars-mode
-    :load-path "vendor/handlebars-mode"
-    :mode "\\.hbs\\'")
-#+END_SRC
-
 ** Json
    #+name: programming_languages
    #+begin_src emacs-lisp
@@ -559,7 +550,9 @@ Change the directory where backup files are stored and other backup changes.
               ("\\.erb\\'" . web-mode)
               ("\\.mustache\\'" . web-mode)
               ("\\.djhtml\\'" . web-mode)
-              ("\\.html?\\'" . web-mode))
+              ("\\.html?\\'" . web-mode)
+              ("\\.njk\\'" . web-mode)
+              ("\\.hbs\\'" . web-mode))
        :config
        (defun my-web-mode-hook ()
          (setq web-mode-markup-indent-offset 2)
