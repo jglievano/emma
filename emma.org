@@ -27,40 +27,61 @@
        (make-directory em-savefile-dir))
    #+end_src
 
-** Helper functions
+** Initialize use-package
 
-   A function to add vendor paths to load-path.
+Use package is used to install all third-party packages.
 
-   #+name: pre_requisites
-   #+begin_src emacs-lisp
-     (defun add-vendor-to-load-path (vendor)
-       (add-to-list 'load-path (expand-file-name vendor "~/.emacs.d/vendor")))
-   #+end_src
+#+NAME: pre_requisites
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path (expand-file-name "use-package"
+                                            "~/.emacs/vendor"))
+  (eval-when-compile
+    (require 'use-package))
+#+END_SRC
 
 ** Required libraries
 
-*** By smart-mode-line
-    #+name: pre_requisites
-    #+begin_src emacs-lisp
-      (add-vendor-to-load-path "rich-minority")
-    #+end_src
+#+NAME: pre_requisites
+#+BEGIN_SRC emacs-lisp
+  (use-package autothemer    :defer t :load-path "vendor/autothemer")
+  (use-package dash          :defer t :load-path "vendor/dash")
+  (use-package rich-minority :defer t :load-path "vendor/rich-minority")
+  (use-package s             :defer t :load-path "vendor/s")
+  (use-package with-editor   :defer t :load-path "vendor/with-editor")
+#+END_SRC
 
-*** By magit
-    #+name: pre_requisites
-    #+begin_src emacs-lisp
-      (add-vendor-to-load-path "with-editor")
-    #+end_src
 
-** use-package
+* Evil
 
-   Use package is used to install all third-party packages.
-
-   #+name: pre_requisites
-   #+begin_src emacs-lisp
-     (add-vendor-to-load-path "use-package")
-     (eval-when-compile
-       (require 'use-package))
-   #+end_src
+#+NAME: evil
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :load-path "vendor/evil"
+    :config
+    (evil-mode 1))
+  (use-package evil-leader
+    :load-path "vendor/evil-leader"
+    :demand t
+    :config
+    (global-evil-leader-mode)
+    (evil-leader/set-leader "<SPC>")
+    (evil-leader/set-key
+      "bs" 'save-buffer
+      "ff" 'ido-find-file
+      "gs" 'magit-status
+      "pp" 'projectile-switch-project
+      "pf" 'projectile-find-file
+      "x" 'smex
+      "X" 'smex-major-mode-commands))
+  (use-package evil-surround
+    :load-path "vendor/evil-surround"
+    :demand t
+    :config
+    (global-evil-surround-mode 1))
+  (use-package evil-magit
+    :load-path "vendor/evil-magit"
+    :after magit)
+#+END_SRC
 
 
 * Evil
@@ -89,8 +110,6 @@
 
    #+name: look-and-feel
    #+begin_src emacs-lisp
-     (add-vendor-to-load-path "dash")
-     (add-vendor-to-load-path "autothemer")
      (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
      (load-theme 'emma t)
    #+end_src
@@ -147,28 +166,27 @@
    #+END_SRC
 
 
-* Startup
+* Better defaults
 
-  Start up as org-mode and without any message.
+Start up as org-mode and without any message.
 
-  #+name: startup
-  #+begin_src emacs-lisp
-    (setq inhibit-startup-screen t)
-    (setq initial-scratch-message nil)
-    (setq initial-major-mode 'org-mode)
-  #+end_src
+#+NAME: defaults
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-screen t)
+  (setq initial-scratch-message nil)
+  (setq initial-major-mode 'org-mode)
+#+END_SRC
 
+Change the directory where backup files are stored and other backup changes.
 
-* Better backup
-
-  #+name: backup
-  #+begin_src emacs-lisp
-    (setq backup-directory-alist `(("." . "~/.saves")))
-    (setq backup-by-copying t
-          delete-old-versions 6
-          kept-old-versions 2
-          version-control t)
-  #+end_src
+#+NAME: defaults
+#+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist `(("." . "~/.saves")))
+  (setq backup-by-copying t
+        delete-old-versions 6
+        kept-old-versions 2
+        version-control t)
+#+END_SRC
 
 
 * macOS
@@ -184,7 +202,7 @@
    #+end_src
 
 
-* Formatting and whitespace
+* Editing
 
 ** 2 spaces, no tabs
   Emma likes 2 spaces and no tabs.
@@ -212,6 +230,26 @@
        :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
    #+end_src
 
+** Autocompletion
+
+   #+name: editing
+   #+begin_src emacs-lisp
+     (use-package company
+       :load-path "vendor/company-mode"
+       :commands global-company-mode
+       :config (global-company-mode))
+   #+end_src
+
+** Spellcheck
+
+   #+name: editing
+   #+begin_src emacs-lisp
+     (use-package flycheck
+       :load-path "vendor/flycheck"
+       :commands global-flycheck-mode
+       :config (global-flycheck-mode))
+   #+end_src
+
 
 * Navigation
 
@@ -236,12 +274,15 @@
              ido-create-new-buffer 'always
              ido-use-filename-at-point 'guess
              ido-max-prospects 10
+             ido-max-directory-size 100000
              ido-save-directory-list-file (expand-file-name
                                            "ido.hist" em-savefile-dir)
              ido-default-file-method 'selected-window
+             ido-default-buffer-method 'selected-window
              ido-auto-merge-work-directories-length -1)
-       (ido-mode +1)
-       (ido-everywhere +1)
+       (ido-mode 1)
+       (ido-everywhere 1)
+       (ido-ubiquitous-mode 1)
 
        (flx-ido-mode +1)
        (setq ido-enable-flex-matching t)
@@ -251,6 +292,7 @@
        :load-path "vendor/smex"
        :bind (("M-x" . smex)
               ("M-X" . smex-major-mode-commands))
+       :demand t
        :config
        (setq smex-save-file (expand-file-name ".smex-items" em-savefile-dir))
        (smex-initialize))
@@ -272,6 +314,7 @@
    #+begin_src emacs-lisp
      (use-package projectile
        :load-path "vendor/projectile"
+       :demand t
        :diminish projectile-mode
        :commands projectile-global-mode
        :defer 5
@@ -328,82 +371,58 @@
        :init
        (require 'which-key)
        (which-key-mode)
-       :config (setq which-key-idle-delay 0.3))
+       :config (setq which-key-idle-delay 0.05))
    #+end_src
 
 
-* Editing
+* Communications
 
-** Autocompletion
+** IRC
 
-   #+name: editing
-   #+begin_src emacs-lisp
-     (use-package company
-       :load-path "vendor/company-mode"
-       :commands global-company-mode
-       :config (global-company-mode))
-   #+end_src
+#+NAME: irc
+#+BEGIN_SRC emacs-lisp
+  (use-package circe
+    :load-path "vendor/circe")
+#+END_SRC
 
-** Spellcheck
+** Email
 
-   #+name: editing
-   #+begin_src emacs-lisp
-     (use-package flycheck
-       :load-path "vendor/flycheck"
-       :commands global-flycheck-mode
-       :config (global-flycheck-mode))
-   #+end_src
-
-
-* IRC
-
-** Circe
-
-   #+name: irc
-   #+begin_src emacs-lisp
-     (use-package circe
-       :load-path "vendor/circe")
-   #+end_src
-
-
-* Email
-
-  #+name: email
-  #+begin_src emacs-lisp
-    (defvar em-mu4e-load-path (concat em-local-user-dir "share/emacs/site-lisp/mu/mu4e"))
-    (message "Using mu4e from %s" em-mu4e-load-path)
-    (use-package mu4e
-      :load-path em-mu4e-load-path
-      :config
-      (setq mu4e-mu-binary (concat em-local-user-dir "bin/mu"))
-      (setq mu4e-maildir "~/.Maildir")
-      (setq message-send-mail-function 'message-send-mail-with-sendmail
-            sendmail-program "msmtp"
-            message-sendmail-envelope-from 'header)
-      (setq mu4e-get-mail-command "offlineimap"
-            mu4e-compose-context-policy 'ask-if-none
-            mu4e-context-policy 'pick-first
-            mu4e-view-show-images t
-            mu4e-view-image-max-width 800
-            mu4e-index-update-in-background nil
-            user-full-name "Gabriel Lievano")
-      (setq mu4e-contexts
-            `(,(make-mu4e-context
-                :name "Fastmail"
-                :match-func
-                (lambda (msg) (when msg
-                                (string-prefix-p
-                                 "/jglievano-fastmail.com"
-                                 (mu4e-message-field msg :maildir))))
-                :vars
-                '((user-mail-address . "gabe@jglievano.com")
-                  (mu4e-sent-folder . "/jglievano-fastmail.com/Sent")
-                  (mu4e-drafts-folder . "/jglievano-fastmail.com/Drafts")
-                  (mu4e-trash-folder . "/jglievano-fastmail.com/Trash")
-                  (mu4e-refile-folder . "/jglievano-fastmail.com/Archive")
-                  (mail-reply-to "gabe@jglievano.com")
-                  (setq message-sendmail-extra-arguments (list "-a" "Fastmail")))))))
-  #+end_src
+#+NAME: email
+#+BEGIN_SRC emacs-lisp
+  (defvar em-mu4e-load-path (concat em-local-user-dir "share/emacs/site-lisp/mu/mu4e"))
+  (message "Using mu4e from %s" em-mu4e-load-path)
+  (use-package mu4e
+    :load-path em-mu4e-load-path
+    :config
+    (setq mu4e-mu-binary (concat em-local-user-dir "bin/mu"))
+    (setq mu4e-maildir "~/.Maildir")
+    (setq message-send-mail-function 'message-send-mail-with-sendmail
+          sendmail-program "msmtp"
+          message-sendmail-envelope-from 'header)
+    (setq mu4e-get-mail-command "offlineimap"
+          mu4e-compose-context-policy 'ask-if-none
+          mu4e-context-policy 'pick-first
+          mu4e-view-show-images t
+          mu4e-view-image-max-width 800
+          mu4e-index-update-in-background nil
+          user-full-name "Gabriel Lievano")
+    (setq mu4e-contexts
+          `(,(make-mu4e-context
+              :name "Fastmail"
+              :match-func
+              (lambda (msg) (when msg
+                              (string-prefix-p
+                               "/jglievano-fastmail.com"
+                               (mu4e-message-field msg :maildir))))
+              :vars
+              '((user-mail-address . "gabe@jglievano.com")
+                (mu4e-sent-folder . "/jglievano-fastmail.com/Sent")
+                (mu4e-drafts-folder . "/jglievano-fastmail.com/Drafts")
+                (mu4e-trash-folder . "/jglievano-fastmail.com/Trash")
+                (mu4e-refile-folder . "/jglievano-fastmail.com/Archive")
+                (mail-reply-to "gabe@jglievano.com")
+                (setq message-sendmail-extra-arguments (list "-a" "Fastmail")))))))
+#+END_SRC
 
 
 * Version Control
@@ -436,9 +455,9 @@
 
 
 * Programming languages
-  :properties:
-  :category: programming languages
-  :end:
+  :PROPERTIES:
+  :CATEGORY: programming
+  :END:
 
 ** Shell
 
@@ -452,14 +471,13 @@
 
 ** Go
 
-   #+name: programming_languages
-   #+begin_src emacs-lisp
-     (use-package go-mode
-       :load-path "vendor/go-mode.el"
-       :mode "\\.go\\'"
-       :interpreter ("go" . go-mode))
-   #+end_src
-
+#+NAME: programming_languages
+#+BEGIN_SRC emacs-lisp
+  (use-package go-mode
+    :load-path "vendor/go-mode.el"
+    :mode "\\.go\\'"
+    :interpreter ("go" . go-mode))
+#+END_SRC
 
 ** Json
    #+name: programming_languages
@@ -470,31 +488,43 @@
    #+end_src
 
 ** JavaScript
-   #+name: programming_languages
-   #+begin_src emacs-lisp
-     (use-package js2-mode
-       :load-path "vendor/js-mode"
-       :mode "\\.js\\'"
-       :interpreter ("node" . js2-mode)
-       :config
-       (add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2))))
-    #+end_src
+
+#+NAME: programming
+#+BEGIN_SRC emacs-lisp
+  (use-package js2-mode
+    :load-path "vendor/js2-mode"
+    :mode "\\.js\\'"
+    :interpreter ("node" . js2-mode)
+    :config
+    (add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2))))
+#+END_SRC
+
+** Markdown
+
+#+NAME: programming
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+    :load-path "vendor/markdown-mode"
+    :mode (("\\.md\\'" . markdown-mode)
+           ("\\.markdown\\'" . markdown-mode)))
+#+END_SRC
 
 ** PHP
-   #+name: programming_languages
-   #+begin_src emacs-lisp
-     (use-package php-mode
-       :load-path "vendor/php-mode"
-       :mode "\\.php\\'"
-       :init
-       (defun emma-php-setup ()
-         (setq tab-width 2
-               indent-tabs-mode nil)
-         (set (make-local-variable 'show-trailing-whitespace) t)
-         (add-hook 'before-saving-hook 'delete-trailing-whitespace nil t)
-         (c-set-style "drupal"))
-       (add-hook 'php-mode-hook #'emma-php-setup))
-    #+end_src
+
+#+NAME: programming_languages
+#+BEGIN_SRC emacs-lisp
+  (use-package php-mode
+    :load-path "vendor/php-mode"
+    :mode "\\.php\\'"
+    :init
+    (defun emma-php-setup ()
+      (setq tab-width 2
+            indent-tabs-mode nil)
+      (set (make-local-variable 'show-trailing-whitespace) t)
+      (add-hook 'before-saving-hook 'delete-trailing-whitespace nil t)
+      (c-set-style "drupal"))
+    (add-hook 'php-mode-hook #'emma-php-setup))
+#+END_SRC
 
 ** Rust
    #+name: programming_languages
@@ -549,7 +579,7 @@
 
 * Org
 
-** Keybindings
+** Keybindings Map
    :PROPERTIES:
    :CATEGORY: keybindings
    :END:
@@ -657,22 +687,22 @@
 
 ** TODO keywords
 
-   #+NAME: org
-   #+BEGIN_SRC emacs-lisp
-     (setq org-todo-keywords
-           '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-             (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELED(c@/!)" "PHONE" "MEETING")))
+#+NAME: org
+#+BEGIN_SRC emacs-lisp
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+          (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELED(c@/!)" "PHONE" "MEETING")))
 
-     (setq org-todo-keyword-faces
-           '(("TODO" :foreground "red" :weight bold)
-             ("NEXT" :foreground "blue" :weight bold)
-             ("DONE" :foreground "forest green" :weight bold)
-             ("WAITING" :foreground "orange" :weight bold)
-             ("HOLD" :foreground "magenta" :weight bold)
-             ("CANCELED" :foreground "forest green" :weight bold)
-             ("MEETING" :foreground "forest green" :weight bold)
-             ("PHONE" :foreground "forest green" :weight bold)))
-   #+END_SRC
+  (setq org-todo-keyword-faces
+        '(("TODO" :foreground "red" :weight bold)
+          ("NEXT" :foreground "blue" :weight bold)
+          ("DONE" :foreground "forest green" :weight bold)
+          ("WAITING" :foreground "orange" :weight bold)
+          ("HOLD" :foreground "magenta" :weight bold)
+          ("CANCELED" :foreground "forest green" :weight bold)
+          ("MEETING" :foreground "forest green" :weight bold)
+          ("PHONE" :foreground "forest green" :weight bold)))
+#+END_SRC
 
 ** TODO state triggers
 
@@ -701,11 +731,11 @@
      ;; Capture templates for: TODO tasks, Notes, Appointments, Phone calls,
      ;; Meetings, and org-protocol.
      (setq org-capture-templates
-           '(("t" "todo" entry (file "~/Dropbox/org/refile.org")
+           '(("t" "Todo" entry (file "~/Dropbox/org/refile.org")
               "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-             ("r" "respond" entry (file "~/Dropbox/org/refile.org")
+             ("r" "Respond" entry (file "~/Dropbox/org/refile.org")
               "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-             ("n" "note" entry (file "~/Dropbox/org/refile.org")
+             ("n" "Note" entry (file "~/Dropbox/org/refile.org")
               "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
              ("j" "Journal" entry (file+datetree "~/Dropbox/org/refile.org")
               "* %?\n%U\n" :clock-in t :clock-resume t)
@@ -723,7 +753,7 @@
        (interactive)
        (save-excursion
          (beginning-of-line 0)
-         (org-remove-empty-drawer-at "LOGBOOK" (point))))
+         (org-remove-empty-drawer-at (point))))
      (add-hook 'org-clock-out-hook 'em/remove-empty-drawer-on-clock-out 'append)
    #+END_SRC
 
@@ -731,18 +761,11 @@
 
    #+NAME: org
    #+BEGIN_SRC emacs-lisp
-     (setq org-refile-targets '((nil :maxlevel .9)
-                                (org-agenda-files :maxlevel . 9)))
+     (setq org-refile-targets '((org-agenda-files :maxlevel . 9)))
      (setq org-refile-use-outline-path t)
      (setq org-outline-path-complete-in-steps nil)
      (setq org-refile-allow-creating-parent-nodes 'confirm)
      (setq org-completion-use-ido t)
-     (setq ido-everywhere t)
-     (setq ido-max-directory-size 100000)
-     (ido-mode 'both)
-     (setq ido-default-file-method 'selected-window)
-     (setq ido-default-buffer-method 'selected-window)
-     (setq org-indirect-buffer-display 'current-window)
 
      (defun em/verify-refile-target ()
        "Exclude todo keywords with a done state from refile targets."
@@ -750,3 +773,81 @@
 
      (setq org-refile-target-verify-function 'em/verify-refile-target)
    #+END_SRC
+
+** Custom agenda views
+
+*** Setup
+
+#+NAME: custom_agenda_views
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-dim-blocked-tasks nil)
+  (setq org-agenda-compact-blocks t)
+  (setq org-agenda-custom-commands
+        '(("N" "Notes" tags "NOTE"
+           ((org-agenda-overriding-header "Notes")
+            (org-tags-match-list-sublevels t)))
+          ("h" "Habits" tags-todo "STYLE=\"habit\""
+           ((org-agenda-overriding-header "Habits")
+            (org-agenda-sorting-strategy
+             '(todo-state-down effort-up category-keep))))
+          (" " "Agenda"
+           ((agenda "" nil)
+            (tags "REFILE"
+                  ((org-agenda-overriding-header "Tasks to Refile")
+                   (org-tags-match-list-sublevels nil)))
+            (tags-todo "-CANCELED/!"
+                       ((org-agenda-overriding-header "Stuck Projects")
+                        (org-agenda-skip-functin 'em/skip-non-stuck-projecs)
+                        (org-agenda-sorting-strategy '(category-keep))))
+            (tags-todo "-HOLD-CANCELED/!"
+                       ((org-agenda-overriding-header "Projects")
+                        (org-agenda-skip-function 'em/skip-non-projects)
+                        (org-tags-match-list-sublevels 'indented)
+                        (org-agenda-sorting-strategy '(category-keep))))
+            (tags-todo "-CANCELED/!NEXT"
+                       ((org-agenda-overriding-header (concat "Project Next Tasks"
+                                                              (if em/hide-scheduled-and-waiting-next-tasks
+                                                                  ""
+                                                                " (including WAITING and SCHEDULED tasks)")))
+                        (org-agenda-skip-function 'em/skip-projects-and-habits-and-single-tasks)
+                        (org-tags-match-list-sublevels t)
+                        (org-agenda-todo-ignore-scheduled em/hide-scheduled-and-waiting-next-tasks)
+                        (org-agenda-todo-ignore-deadlines em/hide-scheduled-and-waiting-next-tasks)
+                        (org-agenda-todo-ignore-with-date em/hide-scheduled-and-waiting-next-tasks)
+                        (org-agenda-sorting-strategy
+                         '(todo-state-down effort-up category-keep))))
+            (tags-todo "-REFILE-CANCELED-WAITING-HOLD/!"
+                       ((org-agenda-overriding-header (concat "Project Subtasks"
+                                                              (if em/hide-scheduled-and-waiting-next-tasks
+                                                                  ""
+                                                                " (including WAITING and SCHEDULED tasks)")))
+                        (org-agenda-skip-function 'em/skip-non-project-tasks)
+                        (org-agenda-todo-ignore-scheduled em/hide-scheduled-and-waiting-next-tasks)
+                        (org-agenda-todo-ignore-deadlines em/hide-scheduled-and-waiting-next-tasks)
+                        (org-agenda-todo-ignore-with-date em/hide-scheduled/and-waiting-next-tasks)
+                        (org-agenda-sorting-strategy '(category-keep))))
+            (tags-todo "-REFILE-CANCELED-WAITING-HOLD/!"
+                       ((org-agenda-overriding-header (concat "Standalone Tasks"
+                                                              (if em/hide-scheduled-and-waiting-next-tasks
+                                                                  ""
+                                                                " (including WAITING and SCHEDULED tasks)")))
+                        (org-agenda-skip-function 'em/skip-project-tasks)
+                        (org-agenda-todo-ignore-scheduled 'em/hide-scheduled-and-waiting-next-tasks)
+                        (org-agenda-todo-ignore-deadlines 'em/hide-scheduled-and-waiting-next-tasks)
+                        (org-agenda-todo-ignore-with-date 'em/hide-scheduled-and-waiting-next-tasks)
+                        (org-agenda-sorting-strategy '(category-keep))))
+            (tags-todo "-CANCELED+WAITING|HOLD/!"
+                       ((org-agenda-overriding-header (concat "Waiting and Postponed Tasks"
+                                                              (if em/hide-scheduled-and-waiting-tasks
+                                                                  ""
+                                                                " (including WAITING and SCHEDULED tasks)")))
+                        (org-agenda-skip-function 'em/skip-non-tasks)
+                        (org-tags-match-list-sublevels nil)
+                        (org-agenda-todo-ignore-scheduled em/hide-scheduled-and-waiting-next-tasks)
+                        (org-agenda-todo-ignore-deadlines em/hide-scheduled-and-waiting-next-tasks)))
+            (tags "-REFILE/"
+                  ((org-agenda-overriding-header "Tasks to Archive")
+                   (org-agenda-skip-function 'em/skip-non-archivable-tasks)
+                   (org-tags-match-list-sublevels nil))))
+           nil)))
+#+END_SRC

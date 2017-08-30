@@ -29,3 +29,6 @@ github.com skeeto/emacs-memoize
 github.com emacs-evil/evil
 github.com cofi/evil-leader
 github.com somelauw/evil-org-mode
+github.com cofi/evil-indent-textobject
+github.com emacs-evil/evil-surround
+github.com jrblevin/markdown-mode
