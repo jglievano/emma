@@ -426,16 +426,6 @@ Change the directory where backup files are stored and other backup changes.
    #+end_src
 
 
-* Lisp
-
-  #+name: lisp
-  #+begin_src emacs-lisp
-    (autoload 'enable-paredit-mode "paredit"
-      "Turn on pseudo-structural editing on Lisp code." t)
-    (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
-    (add-hook 'lisp-mode-hook #'enable-paredit-mode)
-  #+end_src
-
 
 * Programming languages
   :PROPERTIES:
@@ -462,6 +452,15 @@ Change the directory where backup files are stored and other backup changes.
     :interpreter ("go" . go-mode))
 #+END_SRC
 
+** Handlebars
+
+#+NAME: programming
+#+BEGIN_SRC emacs-lisp
+  (use-package handlebars-mode
+    :load-path "vendor/handlebars-mode"
+    :mode "\\.hbs\\'")
+#+END_SRC
+
 ** Json
    #+name: programming_languages
    #+begin_src emacs-lisp
@@ -480,6 +479,16 @@ Change the directory where backup files are stored and other backup changes.
     :interpreter ("node" . js2-mode)
     :config
     (add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2))))
+#+END_SRC
+
+** Lisp
+
+#+NAME: lisp
+#+BEGIN_SRC emacs-lisp
+  (autoload 'enable-paredit-mode "paredit"
+    "Turn on pseudo-structural editing on Lisp code." t)
+  (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook #'enable-paredit-mode)
 #+END_SRC
 
 ** Markdown
