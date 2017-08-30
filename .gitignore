@@ -17,6 +17,7 @@ recentf
 auto-save-list/
 bookmarks
 savehist/
+projectile.cache
 
 # emma
 emma.el
