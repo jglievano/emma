@@ -438,9 +438,9 @@ Change the directory where backup files are stored and other backup changes.
 
 
 * Programming languages
-  :properties:
-  :category: programming languages
-  :end:
+  :PROPERTIES:
+  :CATEGORY: programming
+  :END:
 
 ** Shell
 
@@ -507,15 +507,6 @@ Change the directory where backup files are stored and other backup changes.
       (add-hook 'before-saving-hook 'delete-trailing-whitespace nil t)
       (c-set-style "drupal"))
     (add-hook 'php-mode-hook #'emma-php-setup))
-#+END_SRC
-
-** Pug
-
-#+NAME: programming
-#+BEGIN_SRC emacs-lisp
-  (use-package pug-mode
-    :load-path "vendor/emacs-pug-mode"
-    :mode "\\.pug\\'")
 #+END_SRC
 
 ** Rust

@@ -29,5 +29,4 @@ github.com skeeto/emacs-memoize
 github.com emacs-evil/evil
 github.com cofi/evil-indent-textobject
 github.com emacs-evil/evil-surround
-github.com hlissner/emacs-pug-mode
 github.com jrblevin/markdown-mode
