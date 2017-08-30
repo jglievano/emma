@@ -84,23 +84,6 @@ Use package is used to install all third-party packages.
 #+END_SRC
 
 
-* Evil
-
-#+NAME: evil
-#+BEGIN_SRC emacs-lisp
-  (use-package evil
-    :load-path "vendor/evil"
-    :config
-    (evil-mode 1))
-
-  (use-package evil-leader
-    :load-path "vendor/evil-leader"
-    :commands global-evil-leader-mode
-    :config
-    (global-evil-leader-mode))
-#+END_SRC
-
-
 * Graphics and looks
 
 ** Color theme
@@ -120,7 +103,7 @@ Use package is used to install all third-party packages.
 
    #+name: look-and-feel
    #+begin_src emacs-lisp
-     (set-face-attribute 'default nil :height 140 :family "Operator Mono" :weight 'light)
+     (set-face-attribute 'default nil :height 160 :family "Operator Mono" :weight 'light)
    #+end_src
 
 ** Remove Window-y features
