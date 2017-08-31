@@ -57,6 +57,8 @@ Use package is used to install all third-party packages.
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :load-path "vendor/evil"
+    :init
+    (setq evil-want-C-i-jump nil)
     :config
     (evil-mode 1))
   (use-package evil-leader
