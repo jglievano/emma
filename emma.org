@@ -72,7 +72,7 @@ Use package is used to install all third-party packages.
       ;; buffer
       "bs" 'save-buffer
       "bk" 'ido-kill-buffer
-      
+
       ;; editing
       "ew" 'whitespace-mode
 
@@ -87,17 +87,17 @@ Use package is used to install all third-party packages.
       ;; project
       "pp" 'projectile-switch-project
       "pf" 'projectile-find-file
-      
+
       ;; search
       "ss" 'swiper
       "sa" 'avy-goto-char-2
-      
+
       ;; windows
       "wj" 'split-window-below
       "wl" 'split-window-right
       "wq" 'delete-window
       "ww" 'ace-window
-      
+
       ;; utility
       "mm" 'mu4e
       "x" 'smex
