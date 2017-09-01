@@ -78,6 +78,7 @@ Use package is used to install all third-party packages.
 
       ;; file
       "ff" 'ido-find-file
+      "fq" 'save-buffers-kill-terminal
       "fs" 'save-buffer
 
       ;; git
