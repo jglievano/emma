@@ -57,6 +57,8 @@ Use package is used to install all third-party packages.
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :load-path "vendor/evil"
+    :init
+    (setq evil-want-C-i-jump nil)
     :config
     (evil-mode 1))
   (use-package evil-leader
@@ -66,11 +68,38 @@ Use package is used to install all third-party packages.
     (global-evil-leader-mode)
     (evil-leader/set-leader "<SPC>")
     (evil-leader/set-key
+
+      ;; buffer
       "bs" 'save-buffer
+      "bk" 'ido-kill-buffer
+      
+      ;; editing
+      "ew" 'whitespace-mode
+
+      ;; file
       "ff" 'ido-find-file
+      "fq" 'save-buffers-kill-terminal
+      "fs" 'save-buffer
+
+      ;; git
       "gs" 'magit-status
+
+      ;; project
       "pp" 'projectile-switch-project
       "pf" 'projectile-find-file
+      
+      ;; search
+      "ss" 'swiper
+      "sa" 'avy-goto-char-2
+      
+      ;; windows
+      "wj" 'split-window-below
+      "wl" 'split-window-right
+      "wq" 'delete-window
+      "ww" 'ace-window
+      
+      ;; utility
+      "mm" 'mu4e
       "x" 'smex
       "X" 'smex-major-mode-commands))
   (use-package evil-surround
@@ -315,6 +344,7 @@ Change the directory where backup files are stored and other backup changes.
    #+begin_src emacs-lisp
     (use-package avy
       :load-path "vendor/avy"
+      :demand t
       :bind ("C-c :" . avy-goto-char-2))
   #+end_src
 
@@ -333,6 +363,7 @@ Change the directory where backup files are stored and other backup changes.
      (use-package swiper
        :load-path "vendor/swiper"
        :after ivy
+       :demand t
        :bind (("C-s" . swiper)
               ("C-r" . swiper)))
    #+end_src
