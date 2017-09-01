@@ -107,6 +107,7 @@ Use package is used to install all third-party packages.
    #+name: look-and-feel
    #+begin_src emacs-lisp
      (set-face-attribute 'default nil :height 160 :family "Operator Mono" :weight 'light)
+     (set-face-attribute 'comint-highlight-prompt nil :inherit nil)
    #+end_src
 
 ** Remove Window-y features
