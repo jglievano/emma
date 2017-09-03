@@ -475,6 +475,9 @@ Change the directory where backup files are stored and other backup changes.
        :mode (("bashrc\\'" . conf-mode)
               ("offlineimaprc\\'" . conf-mode)
               ("\\.conf\\'" . conf-mode)))
+     (use-package fish-mode
+       :load-path "vendor/fish-mode"
+       :mode "\\.fish\\'")
    #+end_src
 
 ** Go
