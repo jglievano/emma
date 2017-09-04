@@ -2,11 +2,11 @@
 #+author: Gabriel Lievano
 #+email: gabe@jglievano.com
 
-* Pre-requisites
+* Requisites
 
 ** Variables
 
-   #+NAME: pre_requisites
+   #+NAME: requisites
    #+BEGIN_SRC emacs-lisp
      (defvar em-savefile-dir (expand-file-name "savehist"
                                                (file-name-directory load-file-name)))
@@ -15,9 +15,20 @@
        (defvar em-local-user-dir "/usr/local/"))
    #+END_SRC
 
+** Shell
+
+   #+NAME: requisites
+   #+BEGIN_SRC emacs-lisp
+     (cond ((file-exists-p "/usr/local/bin/fish")
+            (setq explicit-shell-file-name "/usr/local/bin/fish") "/usr/local/bin/fish")
+           ((file-exists-p (expand-file-name "~/.homebrew/bin/fish"))
+            (setq explicit-shell-file-name (expand-file-name
+                                            "~/.homebrew/bin/fish"))))
+   #+END_SRC
+
 ** Paths
 
-   #+name: pre_requisites
+   #+name: requisites
    #+begin_src emacs-lisp
      (setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/.homebrew/bin")))
      (setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "/usr/local/bin")))
@@ -181,8 +192,7 @@ Use package is used to install all third-party packages.
        :diminish paredit-mode)
    #+END_SRC
 
-
-* Better defaults
+** Better defaults
 
 Start up as org-mode and without any message.
 
