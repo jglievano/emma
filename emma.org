@@ -1,4 +1,4 @@
-#+title: My Emacs configuration dubbed "Emma"
+#+TITLE: My Emacs configuration dubbed "Emma"
 #+author: Gabriel Lievano
 #+email: gabe@jglievano.com
 
