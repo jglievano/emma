@@ -503,12 +503,20 @@ Change the directory where backup files are stored and other backup changes.
 ** Json
    #+name: programming_languages
    #+begin_src emacs-lisp
+     (use-package json-reformat
+       :load-path "vendor/json-reformat")
+
      (use-package json-snatcher
        :load-path "vendor/json-snatcher")
 
      (use-package json-mode
        :load-path "vendor/json-mode"
-       :mode "\\.json\\'")
+       :mode "\\.json\\'"
+       :config
+       (add-hook 'json-mode-hook
+               (lambda ()
+                 (make-local-variable 'js-indent-level)
+                 (setq js-indent-level 2))))
    #+end_src
 
 ** JavaScript
