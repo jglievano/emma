@@ -35,3 +35,4 @@ github.com cofi/evil-indent-textobject
 github.com emacs-evil/evil-surround
 github.com jrblevin/markdown-mode
 github.com danielevans/handlebars-mode
+github.com sabot/org-bullets

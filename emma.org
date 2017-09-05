@@ -129,6 +129,16 @@ Use package is used to install all third-party packages.
 
 * Graphics and looks
 
+** Org bullets
+  
+   #+NAME: graphics_and_looks
+   #+BEGIN_SRC emacs-lisp
+     (use-package org-bullets
+       :load-path "vendor/org-bullets"
+       :config
+       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+   #+END_SRC
+
 ** Color theme
 
    Emma uses a theme based on vim's gruvbox. emma-theme is created using
