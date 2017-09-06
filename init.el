@@ -1,3 +1,23 @@
+;;; init.el -*- lexical-binding: t; -*-
+;;
+;; Author: Gabriel Lievano <gabe@jglievano.com>
+;; URL: https://github.com/jglievano/emma.git
+;;
+;;  ___   __    _________  ______   ______    ______
+;; /__/\ /__/\ /________/\/_____/\ /_____/\  /_____/\
+;; \::\_\\  \ \\__.::.__\/\:::_ \ \\:::_ \ \ \:::_ \ \
+;;  \:. `-\  \ \ /_\::\ \  \:\ \ \ \\:(_) ) )_\:\ \ \ \
+;;   \:. _    \ \\:.\::\ \  \:\ \ \ \\: __ `\ \\:\ \ \ \
+;;    \. \`-\  \ \\: \  \ \  \:\_\ \ \\ \ `\ \ \\:\/.:| |
+;;     \__\/ \__\/ \_____\/   \_____\/ \_\/ \_\/ \____/_/
+;;
+;; Njord is the fallen god of the sea.
+;;
+;;(require 'core (concat user-emacs-directory "core/core"))
+
+;; (njord! :feature
+;;         evil)
+
 ;; Added by package.el. This must come before configurations of
 ;; installed packages. Don't delete this line. If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
