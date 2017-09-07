@@ -14,13 +14,14 @@
 ;;  ░ ░  ░░  ░      ░░  ░      ░  ▒   ▒▒ ░
 ;;    ░   ░      ░   ░      ░     ░   ▒   
 ;;    ░  ░       ░          ░         ░  ░
+
+(defvar emma-version "1.1.0"
+  "Current Emma version.")
+
+(defvar emma-debug-mode (or (getenv "DEBUG") init-file-debug)
+  "If non-nil, all emma functions will be verbose. Set DEBUG=1 or use
+--debug-init to enable.")
                                        
-;(require 'core (concat user-emacs-directory "core/core"))
-
-;(emma! evil
- ;      jump)
-
-
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.

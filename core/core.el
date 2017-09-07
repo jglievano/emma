@@ -13,13 +13,6 @@
 ;;   +...      any of the above but part of a module, e.g. `+emacs-lisp|init-hook'
 ;;
 
-(defvar emma-version "1.1.0"
-  "Current Emma version.")
-
-(defvar emma-debug-mode (or (getenv "DEBUG") init-file-debug)
-  "If non-nil, all emma functions will be verbose. Set DEBUG=1 or use
---debug-init to enable.")
-
 (defvar emma-emacs-dir (expand-file-name user-emacs-directory)
   "The path to this emacs directory.")
 
