@@ -59,30 +59,14 @@ intended).")
 (defvar emma-init-time nil
   "The time it took, in seconds, for EMMA Emacs to initialize.")
 
-(defvar emma-modules ()
-  "A hash table of enabled modules. Set by `emma-initialize-modules'.")
-
-(defvar emma-packages ()
-  "A list of enabled packages. Each element is a sublist, whose CAR is the
-package's name as a symbol, and whose CDR is the plist supplied to its
-`package!' declaration. Set by `emma-initialize-packages'.")
-
-(defvar emma-core-packages
-  '(persistent-soft quelpa use-package)
-  "A list of packages that must be installed (and will be auto-installed if
-missing) and shouldn't be deleted.")
-
-(defvar emma-disabled-packages ()
-  "A list of packages that should be ignored by `def-package!'.")
+(defvar emma-modules '()
+  "A list of enabled modules. Set by `emma-initialize-modules'.")
 
 (defvar emma-reload-hook nil
   "A list of hooks to run when `emma/reload' is called.")
 
 (defvar emma--site-load-path load-path
   "The load path of built in Emacs libraries.")
-
-(defvar emma--package-load-path ()
-  "The load path of package libraries installed via ELPA or QUELPA.")
 
 (defvar emma--base-load-path
   (append (list emma-core-dir emma-modules-dir)
@@ -95,7 +79,7 @@ base by `emma!' and for calculating how many packages exist.")
 
 (setq load-prefer-newer (or noninteractive emma-debug-mode)
       package--init-file-ensured t
-      package-user-dir emma-vendor-dir
+      package-user-dir (expand-file-name "elpa" emma-packages-dir)
       package-enable-at-startup nil
       package-archives
       '(("gnu"   . "https://elpa.gnu.org/packages/")
@@ -148,122 +132,26 @@ to speed up startup."
 
     (package-initialize t)
 
-    (setq emma--package-load-path (directory-files package-user-dir t "^[^.]" t)
+    (setq emma--package-load-path (directory-files emma-vendor-dir t "^[^.]" t)
           load-path (append load-path emma--package-load-path))
 
-    ;; Ensure core packages are installed
-    (dolist (pkg emma-core-packages)
-      (unless (package-installed-p pkg)
-        (unless emma--refresh-p
-          (package-refresh-contents)
-          (setq emma--refresh-p t))
-        (let ((inhibit-message t))
-          (package-install pkg))
-        (if (package-installed-p pkg)
-            (message "Installed %s" pkg)
-          (error "Couldn't install %s" pkg))))
-
-    (load "use-package" nil t)
+    (eval-when-compile (require 'use-package))
+;;    (load "use-package" nil t)
 
     (setq emma-package-init-p t)))
 
-(defun emma-initialize-autoloads ()
-  "Ensures that `emma-autoload-file' exists and is loaded. Otherwise run
-`emma/reload-autoloads' to generate it."
-  (unless (file-exists-p emma-autoload-file)
-    (quiet! (emma/reload-autoloads))))
+(defun emma-initialize-modules (modules)
+  "Adds MODULES to `emma-modules'. MODULES is a list."
+  (dolist (m modules)
+    (add-to-list 'emma-modules m)))
 
-(defun doom*++*emma-initialize-packages (&optional force-p load-p)
-  "Crawls across your emacs.d to fill `emma-modules' (from init.el) and
-`emma-packages' (from packages.el files), if they aren't set already.
+(defun emma-module-loaded-p (module)
+  "Returns t if MODULE is present in `emma-modules'."
+  (and (member module 'emma-modules) t))
 
-If FORCE-P is non-nil, do it even if they are.
-
-This aggressively reloads core autoload files."
-  (emma-initialize force-p)
-  (let ((noninteractive t)
-        (load-fn
-         (lambda (file &optional noerror)
-           (condition-case-unless-debug ex
-               (load file noerror :nomessage :nosuffix)
-             ('error
-              (error (format "(emma-initialize-packages) %s in %s: %s"
-                             (car ex)
-                             (file-relative-name file emma-emacs-dir)
-                             (error-message-string ex))
-                     :error))))))
-    (when (or force-p (not emma-modules))
-      (setq emma-modules nil)
-      (funcall load-fn (expand-file-name "init.el" emma-emacs-dir))
-      (when load-p
-        (let (noninteractive)
-          (funcall load-fn (emma-module-path :private user-login-name "init.el") t)
-          (funcall load-fn (expand-file-name "core.el" emma-core-dir)))
-        (mapc load-fn (file-expand-wildcards (expand-file-name "autoload/*.el" emma-core-dir))))
-      (emma|finalize))
-    (when (or force-p (not emma-packages))
-      (setq emma-packages nil)
-      (funcall load-fn (expand-file-name "packages.el" emma-core-dir))
-      (cl-loop for (module . submodule) in (emma--module-pairs)
-               for path = (emma-module-path module submodule "packages.el")
-               do
-               (let ((emma--module (cons module submodule)))
-                 (funcall load-fn path t))))))
-
-(defun doom*++*emma-initialize-modules (modules)
-  "Adds MODULES to `emma-modules'. MODULES must be in mplist format.
-
-  e.g '(:feature evil :lang emacs-lisp javascript java)"
-  (unless emma-modules
-    (setq emma-modules (make-hash-table :test #'equal :size (+ 5 (length modules)))))
-  (let (mode)
-    (dolist (m modules)
-      (cond ((keywordp m)
-             (setq mode m))
-            ((not mode)
-             (error "No namespace specified on `emma!' for %s" m))
-            ((listp m)
-             (emma-module-enable mode (car m) (cdr m)))
-            (t
-             (emma-module-enable mode m))))))
-
-(defun doom*++*emma-module-path (module submodule &optional file)
-  "Get the full path to a module: e.g. :lang emacs-lisp maps to
-~/.emacs.d/modules/lang/emacs-lisp/ and will append FILE if non-nil."
-  (when (keywordp module)
-    (setq module (substring (symbol-name module) 1)))
-  (when (symbolp submodule)
-    (setq submodule (symbol-name submodule)))
-  (expand-file-name (concat module "/" submodule "/" file)
-                    emma-modules-dir))
-
-(defun doom*++*emma-module-flags (module submodule)
-  "Returns a list of flags provided for MODULE SUBMODULE."
-  (and (hash-table-p emma-modules)
-       (gethash (cons module submodule) emma-modules)))
-
-(defun doom*++*emma-module-loaded-p (module submodule)
-  "Returns t if MODULE->SUBMODULE is present in `emma-modules'."
-  (and (emma-module-flags module submodule) t))
-
-(defun doom*++*emma-module-enable (module submodule &optional flags)
-  "Adds MODULE and SUBMODULE to `emma-modules', overwriting it if it exists.
-
-MODULE is a keyword, SUBMODULE is a symbol. e.g. :lang 'emacs-lisp.
-
-Used by `require!' and `depends-on!'."
-  (puthash (cons module submodule)
-           (emma-enlist (or flags t))
-           emma-modules))
-
-(defun doom*++*emma--module-pairs ()
-  "Returns `emma-modules' as a list of (MODULE . SUBMODULE) cons cells. The list
-is sorted by order of insertion unless ALL-P is non-nil. If ALL-P is non-nil,
-include all modules, enabled or otherwise."
-  (unless (hash-table-p emma-modules)
-    (error "emma-modules is uninitialized"))
-  (cl-loop for key being the hash-keys of emma-modules
-           collect key))
+(defun emma-module-enable (module &optional flags)
+  "Adds MODULE to `emma-modules'."
+  (add-to-list module emma-modules))
 
 (defun doom*++*emma--module-paths (&optional append-file)
   "Returns a list of absolute file paths to activated modules, with APPEND-FILE
@@ -273,46 +161,32 @@ added, if the file exists."
            if (file-exists-p path)
            collect path))
 
-
-
 (defun emma--display-benchmark ()
   (message "Loaded %s packages in %.03fs"
            (- (length load-path) (length emma--base-load-path))
            (setq emma-init-time (float-time (time-subtract after-init-time before-init-time)))))
 
-;; TODO: (autoload 'use-package "use-package" nil nil 'macro)
+(autoload 'use-package "vendor/use-package" nil nil 'macro)
 
 (defmacro emma! (&rest modules)
-  "Bootstrap EMMA Emacs.")
-
-(defmacro doom*++*emma! (&rest modules)
-  "MODULES is an malformed plist of modules to load."
+  "Bootstrap EMMA Emacs."
   (emma-initialize-modules modules)
-  (when (and user-login-name
-             (not (emma-module-loaded-p :private (intern user-login-name))))
-    (emma-module-enable :private user-login-name))
   `(let (file-name-handler-alist)
      (setq emma-modules ',emma-modules)
 
      (unless noninteractive
-       (load ,(emma-module-path :private user-login-name "init") t t)
-       ,@(cl-loop for (module . submodule) in (emma--module-pairs)
-                  collect `(require! ,module ,submodule nil t))
+     ,@(cl-loop for module in modules
+                collect `(require! ,module nil t))
 
-       (when (display-graphic-p)
-         (require 'server)
-         (unless (server-running-p)
-           (server-start)))
+     (when (display-graphic-p)
+       (require 'server)
+       (unless (server-running-p)
+         (server-start)))
 
-       (add-hook 'emma-init-hook #'emma--display-benchmark t))))
+     (add-hook 'emma-init-hook #'emma--display-benchmark t))))
 
 (defmacro def-package! (name &rest plist)
-  "A thin wrapper around `use-package'.
-
-Ignores the package if its NAME is present in `emma-disabled-packages'."
-  (when (and (memq name emma-disabled-packages)
-             (not (memq :disabled plist)))
-    (setq plist (append (list :disabled t) plist)))
+  "A thin wrapper around `use-package'."
   `(use-package ,name ,@plist))
 
 (defmacro doom*++*def-package-hook! (package when &rest body)
@@ -375,21 +249,21 @@ If NOERROR is non-nil, don't throw an error if the file doesn't exist."
         (unless noerror
           (error "Could not load! file %s" file))))))
 
-(defmacro doom*++*require! (module submodule &optional flags reload-p)
+(defmacro require! (module &optional flags reload-p)
   "Loads the module specified by MODULE (a property) and SUBMODULE (a symbol).
 
 The module is only loaded once. If RELOAD-P is non-nil, load it again."
-  (let ((loaded-p (emma-module-loaded-p module submodule)))
+  (let ((loaded-p (emma-module-loaded-p module)))
     (when (or reload-p (not loaded-p))
       (unless loaded-p
-        (emma-module-enable module submodule flags))
+        (emma-module-enable module flags))
       `(condition-case-unless-debug ex
-           (let ((emma--module ',(cons module submodule)))
-             (load! config ,(emma-module-path module submodule) t))
+           (let ((emma--module ',(module)))
+             (load! config ,(emma-module-path module) t))
          ('error
           (lwarn 'emma-modules :error
-                 "%s in '%s %s' -> %s"
-                 (car ex) ,module ',submodule
+                 "%s in '%s' -> %s"
+                 (car ex) ,module
                  (error-message-string ex)))))))
 
 (defmacro doom*++*featurep! (module &optional submodule flag)

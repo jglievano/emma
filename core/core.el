@@ -135,7 +135,7 @@ called. Use for transient files.")
 
   (setq gc-cons-threshold 16777216
         gc-cons-percentage 0.1
-        file-name-handler-alist emma--file-handler-alist))
+        file-name-handler-alist emma--file-name-handler-alist))
 
 ;;; Initialize.
 (eval-and-compile
