@@ -1,21 +1,21 @@
 ;;; core-editor.el -*- lexical-binding: t; -*-
 
-(defvar doom-large-file-size 1
+(defvar emma-large-file-size 1
   "Size (in MB) above which the user will be prompted to open the file literally
 to avoid performance issues. Opening literally means that no major or minor
 modes are active and the buffer is read-only.")
 
-(defvar doom-large-file-modes-list
+(defvar emma-large-file-modes-list
   '(archive-mode tar-mode jka-compr git-commit-mode image-mode
     doc-view-mode doc-view-mode-maybe ebrowse-tree-mode pdf-view-mode)
-  "Major modes that `doom|check-large-file' will ignore.")
+  "Major modes that `emma|check-large-file' will ignore.")
 
 (setq-default
  vc-follow-symlinks t
  ;; Save clipboard contents into kill-ring before replacing them
  save-interprogram-paste-before-kill t
  ;; Bookmarks
- bookmark-default-file (concat doom-cache-dir "bookmarks")
+ bookmark-default-file (concat emma-cache-dir "bookmarks")
  bookmark-save-flag t
  ;; Formatting
  delete-trailing-lines nil
@@ -47,21 +47,21 @@ modes are active and the buffer is read-only.")
    (newline-mark ?\n [?¬ ?\n])
    (space-mark ?\  [?·] [?.])))
 
-(defun doom|ediff-use-existing-frame ()
+(defun emma|ediff-use-existing-frame ()
   "Use existing frame instead of creating a new one."
   (setq ediff-diff-options           "-w"
         ediff-split-window-function  #'split-window-horizontally
         ;; no extra frames
         ediff-window-setup-function  #'ediff-setup-windows-plain))
-(add-hook 'ediff-load-hook #'doom|ediff-use-existing-frame)
+(add-hook 'ediff-load-hook #'emma|ediff-use-existing-frame)
 
-(defun doom|dont-kill-scratch-buffer ()
+(defun emma|dont-kill-scratch-buffer ()
   "Don't kill the scratch buffer."
   (or (not (string= (buffer-name) "*scratch*"))
       (ignore (bury-buffer))))
-(add-hook 'kill-buffer-query-functions #'doom|dont-kill-scratch-buffer)
+(add-hook 'kill-buffer-query-functions #'emma|dont-kill-scratch-buffer)
 
-(defun doom*delete-trailing-whitespace (orig-fn &rest args)
+(defun emma*delete-trailing-whitespace (orig-fn &rest args)
   "Don't affect trailing whitespace on current line."
   (let ((linestr (buffer-substring-no-properties
                   (line-beginning-position)
@@ -70,16 +70,16 @@ modes are active and the buffer is read-only.")
     (when (and (if (featurep 'evil) (evil-insert-state-p) t)
                (string-match-p "^[\s\t]*$" linestr))
       (insert linestr))))
-(advice-add #'delete-trailing-whitespace :around #'doom*delete-trailing-whitespace)
+(advice-add #'delete-trailing-whitespace :around #'emma*delete-trailing-whitespace)
 
-(defun doom|check-large-file ()
-  "Check if the buffer's file is large (see `doom-large-file-size'). If so, ask
+(defun emma|check-large-file ()
+  "Check if the buffer's file is large (see `emma-large-file-size'). If so, ask
 for confirmation to open it literally (read-only, disabled undo and in
 fundamental-mode) for performance sake."
   (let* ((filename (buffer-file-name))
          (size (nth 7 (file-attributes filename))))
-    (when (and (not (memq major-mode doom-large-file-modes-list))
-               size (> size (* 1024 1024 doom-large-file-size))
+    (when (and (not (memq major-mode emma-large-file-modes-list))
+               size (> size (* 1024 1024 emma-large-file-size))
                (y-or-n-p
                 (format (concat "%s is a large file, open literally to "
                                 "avoid performance issues?")
@@ -87,20 +87,20 @@ fundamental-mode) for performance sake."
       (setq buffer-read-only t)
       (buffer-disable-undo)
       (fundamental-mode))))
-(add-hook 'find-file-hook #'doom|check-large-file)
+(add-hook 'find-file-hook #'emma|check-large-file)
 
 ;; Automatic minor modes
-(defvar doom-auto-minor-mode-alist '()
+(defvar emma-auto-minor-mode-alist '()
   "Alist mapping filename patterns to corresponding minor mode functions, like
 `auto-mode-alist'. All elements of this alist are checked, meaning you can
 enable multiple minor modes for the same regexp.")
 
-(defun doom|enable-minor-mode-maybe ()
-  "Check file name against `doom-auto-minor-mode-alist'."
+(defun emma|enable-minor-mode-maybe ()
+  "Check file name against `emma-auto-minor-mode-alist'."
   (when buffer-file-name
     (let ((name buffer-file-name)
           (remote-id (file-remote-p buffer-file-name))
-          (alist doom-auto-minor-mode-alist))
+          (alist emma-auto-minor-mode-alist))
       ;; Remove backup-suffixes from file name.
       (setq name (file-name-sans-versions name))
       ;; Remove remote file name identification.
@@ -112,10 +112,10 @@ enable multiple minor modes for the same regexp.")
             (funcall (cdar alist) 1))
         (setq alist (cdr alist))))))
 
-(add-hook 'find-file-hook #'doom|enable-minor-mode-maybe)
+(add-hook 'find-file-hook #'emma|enable-minor-mode-maybe)
 
 ;; ensure indirect buffers have buffer-file-name
-(defun doom*set-indirect-buffer-filename (orig-fn base-buffer name &optional clone)
+(defun emma*set-indirect-buffer-filename (orig-fn base-buffer name &optional clone)
   "In indirect buffers, `buffer-file-name' is nil, which can cause problems
 with functions that require it (like modeline segments)."
   (let ((file-name (buffer-file-name base-buffer))
@@ -126,7 +126,7 @@ with functions that require it (like modeline segments)."
           (setq buffer-file-name file-name
                 buffer-file-truename (file-truename file-name)))))
     buffer))
-(advice-add #'make-indirect-buffer :around #'doom*set-indirect-buffer-filename)
+(advice-add #'make-indirect-buffer :around #'emma*set-indirect-buffer-filename)
 
 
 ;;
@@ -141,18 +141,18 @@ with functions that require it (like modeline segments)."
 (electric-indent-mode -1)
 
 ;; savehist / saveplace
-(setq savehist-file (concat doom-cache-dir "savehist")
+(setq savehist-file (concat emma-cache-dir "savehist")
       savehist-save-minibuffer-hisstory t
       savehist-autosave-interval nil ; save on kill only
       savehist-additional-variables '(kill-ring search-ring regexp-search-ring)
-      save-place-file (concat doom-cache-dir "saveplace"))
-(add-hook! 'doom-init-hook #'(savehist-mode save-place-mode))
+      save-place-file (concat emma-cache-dir "saveplace"))
+(add-hook! 'emma-init-hook #'(savehist-mode save-place-mode))
 
 ;; Keep track of recently opened files
 (def-package! recentf
-  :init (add-hook 'doom-init-hook #'recentf-mode)
+  :init (add-hook 'emma-init-hook #'recentf-mode)
   :config
-  (setq recentf-save-file (concat doom-cache-dir "recentf")
+  (setq recentf-save-file (concat emma-cache-dir "recentf")
         recentf-max-menu-items 0
         recentf-max-saved-items 300
         recentf-filename-handlers '(abbreviate-file-name)
@@ -162,7 +162,7 @@ with functions that require it (like modeline segments)."
               ;; ignore private DOOM temp files (but not all of them)
               (concat "^" (replace-regexp-in-string
                            (concat "@" (regexp-quote (system-name)))
-                           "@" (abbreviate-file-name doom-host-dir))))))
+                           "@" (abbreviate-file-name emma-host-dir))))))
 
 
 ;;
@@ -186,7 +186,7 @@ with functions that require it (like modeline segments)."
                     action))))
 
   :config
-  (add-hook 'doom-init-hook #'editorconfig-mode)
+  (add-hook 'emma-init-hook #'editorconfig-mode)
 
   ;; Editorconfig makes indentation weird in Lisp modes, so we disable it. It
   ;; still applies other project settings (e.g. tabs vs spaces) though.
@@ -194,12 +194,12 @@ with functions that require it (like modeline segments)."
   (set! :editorconfig :remove 'lisp-mode)
 
   (defvar whitespace-style)
-  (defun doom|editorconfig-whitespace-mode-maybe (&rest _)
+  (defun emma|editorconfig-whitespace-mode-maybe (&rest _)
     "Show whitespace-mode when file uses TABS (ew)."
     (when indent-tabs-mode
       (let ((whitespace-style '(face tabs tab-mark trailing-lines tail)))
         (whitespace-mode +1))))
-  (add-hook 'editorconfig-custom-hooks #'doom|editorconfig-whitespace-mode-maybe))
+  (add-hook 'editorconfig-custom-hooks #'emma|editorconfig-whitespace-mode-maybe))
 
 ;; Auto-close delimiters and blocks as you type
 (def-package! smartparens
@@ -211,7 +211,7 @@ with functions that require it (like modeline segments)."
         sp-show-pair-delay 0
         sp-max-pair-length 3)
 
-  (add-hook 'doom-init-hook #'smartparens-global-mode)
+  (add-hook 'emma-init-hook #'smartparens-global-mode)
   (require 'smartparens-config)
 
   ;; disable smartparens in evil-mode's replace state (they conflict)
@@ -231,7 +231,7 @@ with functions that require it (like modeline segments)."
   ;; can be very destructive! So disable it!
   (setq undo-tree-auto-save-history nil
         undo-tree-history-directory-alist
-        (list (cons "." (concat doom-cache-dir "undo-tree-hist/")))))
+        (list (cons "." (concat emma-cache-dir "undo-tree-hist/")))))
 
 
 ;;

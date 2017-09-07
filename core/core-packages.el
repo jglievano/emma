@@ -95,7 +95,7 @@ base by `emma!' and for calculating how many packages exist.")
 
 (setq load-prefer-newer (or noninteractive emma-debug-mode)
       package--init-file-ensured t
-      package-user-dir (expand-file-name "elpa" emma-packages-dir)
+      package-user-dir emma-vendor-dir
       package-enable-at-startup nil
       package-archives
       '(("gnu"   . "https://elpa.gnu.org/packages/")
@@ -131,8 +131,7 @@ base by `emma!' and for calculating how many packages exist.")
                                   make-local))
 
 (defun emma-initialize (&optional force-p)
-  "Initialize installed packages (using package.el) and ensure the core packages
-are installed. If you byte-compile core/core.el, this function will be avoided
+  "If core/core.el is byte-compiled, this function will be avoided
 to speed up startup."
   ;; Called early during initialization; only use native functions!
   (when (or (not emma-package-init-p) force-p)
@@ -148,14 +147,7 @@ to speed up startup."
         (make-directory dir t)))
 
     (package-initialize t)
-    ;; Sure, we could let `package-initialize' fill `load-path', but package
-    ;; activation costs precious milliseconds and does other stuff I don't
-    ;; really care about (like load autoload files). My premature optimization
-    ;; quota isn't filled yet.
-    ;;
-    ;; Also, in some edge cases involving package initialization during a
-    ;; non-interactive session, `package-initialize' fails to fill `load-path'.
-    ;; If we want something done right, do it ourselves!
+
     (setq emma--package-load-path (directory-files package-user-dir t "^[^.]" t)
           load-path (append load-path emma--package-load-path))
 
@@ -171,7 +163,6 @@ to speed up startup."
             (message "Installed %s" pkg)
           (error "Couldn't install %s" pkg))))
 
-    (load "quelpa" nil t)
     (load "use-package" nil t)
 
     (setq emma-package-init-p t)))
@@ -354,7 +345,7 @@ to have them return non-nil (or exploit that to overwrite Emma's config)."
         (t
          (error "'%s' isn't a valid hook for def-package-hook!" when))))
 
-(defmacro doom*++*load! (filesym &optional path noerror)
+(defmacro load! (filesym &optional path noerror)
   "Load a file relative to the current executing file (`load-file-name').
 
 FILESYM is either a symbol or string representing the file to load. PATH is

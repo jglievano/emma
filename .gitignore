@@ -21,3 +21,4 @@ projectile.cache
 
 # emma
 emma.el
+.local/
