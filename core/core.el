@@ -62,13 +62,6 @@
       initial-scratch-message nil
       mode-line-format nil)
 
-;; Custom init hooks.
-(defvar emma-init-hook nil
-  "A list of hooks run when Emma is initialized, before `emma-startup-hook'.")
-
-(defvar emma-post-init-hook nil
-  "A list of hooks run after `emma-init-hook'.")
-
 (defun emma-try-run-hook (fn hook)
   "Runs a hook wrapped in a `condition-case-unless-debug' block."
   (condition-case-unless-debug ex
@@ -100,10 +93,14 @@
 
   ;; Add load-paths for each vendor package.
   (setq emma--package-load-path (directory-files emma-vendor-dir t "^[^.]" t)
-        load-path (append load-path emma--package-load-path))
+        load-path (append load-path emma--package-load-path)))
 
-  (eval-when-compile (require 'use-package))
 
+(defun emma|init ()
+  (message "emma|init")
+  (require 'use-package)
+  (require 'evil)
+  (evil-mode 1)
   (unless (string-match "^9" (org-version))
     (warn "org-mode is out of date. org-mode >= 9 expected, got %s instead"
           (org-version))))
@@ -115,7 +112,10 @@
         gc-cons-percentage 0.6
         file-name-handler-alist nil)
 
-  (eval-when-compile (emma-initialize))
+  (emma-initialize)
+  
+  (add-hook 'after-init-hook 'emma|init)
+  
   (setq load-path (eval-when-compile load-path)
         emma--package-load-path (eval-when-compile emma--package-load-path)))
 
