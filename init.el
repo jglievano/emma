@@ -15,7 +15,7 @@
 ;;    ░   ░      ░   ░      ░     ░   ▒   
 ;;    ░  ░       ░          ░         ░  ░
                                        
-(require 'core (concat user-emacs-directory "core/core"))
+;;(require 'core (concat user-emacs-directory "core/core"))
 
 ;; Added by package.el. This must come before configurations of
 ;; installed packages. Don't delete this line. If you don't want it,

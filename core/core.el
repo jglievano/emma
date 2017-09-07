@@ -86,7 +86,7 @@ called. Use for transient files.")
  make-backup-files nil
  abbrev-file-name (concat emma-local-dir "abbrev.el")
  auto-save-list-file-name (concat emma-cache-dir "autosave")
- backup-directory-alist (list (const "." (concat emma-cache-dir "backup/")))
+ backup-directory-alist (list (cons "." (concat emma-cache-dir "backup/")))
  pcache-directory (concat emma-cache-dir "pcache/")
  server-auth-dir (concat emma-cache-dir "server/")
  shared-game-score-directory (concat emma-etc-dir "shared-game-score/")
