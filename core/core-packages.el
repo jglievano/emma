@@ -315,7 +315,7 @@ added, if the file exists."
 
        (add-hook 'emma-init-hook #'emma--display-benchmark t))))
 
-(defmacro doom*++*def-package! (name &rest plist)
+(defmacro def-package! (name &rest plist)
   "A thin wrapper around `use-package'.
 
 Ignores the package if its NAME is present in `emma-disabled-packages'."
