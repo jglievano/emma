@@ -14,7 +14,13 @@
 ;;
 
 (add-to-list 'custom-theme-load-path emma-themes-dir)
-(setq load-path (append load-path (directory-files emma-vendor-dir t "^[^.]" t)))
+;; Remove lisp/org package because we use our own.
+(dolist (path load-path)
+  (if (string-match-p (regexp-quote "lisp/org") path)
+      (setq load-path (remove path load-path))))
+(let ((default-directory emma-vendor-dir))
+  (normal-top-level-add-subdirs-to-load-path))
+(eval-when-compile (require 'org))
 (eval-when-compile (require 'use-package))
 
 (use-package autothemer :defer t)
@@ -114,5 +120,8 @@
 (add-hook 'isearch-mode-end-hook #'emma|enable-ui-keystrokes)
 
 (load-theme 'emma t)
+
+(set-face-attribute 'default nil :height 150 :family "Operator Mono" :weight 'light)
+(set-face-attribute 'comint-highlight-prompt nil :inherit nil)
 
 (provide 'core)

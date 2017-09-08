@@ -4,17 +4,6 @@
 ;; URL: https://github.com/jglievano/emma.git
 ;;
 ;; Emacs configuration based on hlissner/doom-emacs.
-;;
-;; ▓█████  ███▄ ▄███▓ ███▄ ▄███▓ ▄▄▄      
-;; ▓█   ▀ ▓██▒▀█▀ ██▒▓██▒▀█▀ ██▒▒████▄    
-;; ▒███   ▓██    ▓██░▓██    ▓██░▒██  ▀█▄  
-;; ▒▓█  ▄ ▒██    ▒██ ▒██    ▒██ ░██▄▄▄▄██ 
-;; ░▒████▒▒██▒   ░██▒▒██▒   ░██▒ ▓█   ▓██▒
-;; ░░ ▒░ ░░ ▒░   ░  ░░ ▒░   ░  ░ ▒▒   ▓▒█░
-;;  ░ ░  ░░  ░      ░░  ░      ░  ▒   ▒▒ ░
-;;    ░   ░      ░   ░      ░     ░   ▒   
-;;    ░  ░       ░          ░         ░  ░
-
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -51,4 +40,6 @@
 (require 'core (concat emma-core-dir "core"))
 (require 'core-lib (concat emma-core-dir "core-lib"))
 
-(emma! evil)
+(use-package evil
+  :config
+  (evil-mode 1))
