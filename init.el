@@ -40,4 +40,5 @@
 (add-to-list 'load-path emma-core-dir)
 (require 'core)
 
-(emma! evil)
+(emma! ui
+       evil)
