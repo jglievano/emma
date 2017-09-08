@@ -38,6 +38,9 @@
 (defvar emma-modules-dir (concat emma-emacs-dir "modules/")
   "Path to module directories.")
 
+(defvar emma-themes-dir (concat emma-emacs-dir "themes/")
+  "Path to themes.")
+
 (defvar emma-vendor-dir (concat emma-emacs-dir "vendor/")
   "Vendor packages.")
 

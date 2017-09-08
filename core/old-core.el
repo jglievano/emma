@@ -23,6 +23,9 @@
 (use-package s :defer t)
 (use-package with-editor :defer t)
 
+(defvar emma-init-ui-hook nil
+  "List of hooks to run when the theme and font is initialized.")
+
 ;; UTF-8 as the default coding system.
 (when (fboundp 'set-charset-priority)
   (set-charset-priority 'unicode))
@@ -113,6 +116,32 @@
 (add-hook 'isearch-mode-hook #'emma|disable-ui-keystrokes)
 (add-hook 'isearch-mode-end-hook #'emma|enable-ui-keystrokes)
 
-(load-theme 'emma t)
+(defvar winner-dont-bind-my-keys t)
+(autoload 'winner-mode "winner" nil t)
+(add-hook 'emma-init-ui-hook #'winner-mode)
+
+(setq show-paren-delay 0.1
+      show-paren-highlight-openparen t
+      show-paren-when-point-inside-paren t)
+(add-hook 'emma-init-ui-hook #'show-paren-mode)
+
+(setq-default window-divider-default-places t
+	      window-divider-default-bottom-width 0
+	      window-divider-default-right-width 1)
+(add-hook 'emma-init-ui-hook #'window-divider-mode)
+
+(defun emma|init-ui (&optional frame)
+  (if emma-debug-mode (message "emma|init-ui"))
+  (load-theme 'emma t)
+  (run-hooks 'emma-init-ui-hook))
+
+(defun emma|reload-ui-in-daemon (frame)
+  (when (or (daemonp) (not (display-graphic-p)))
+    (with-selected-frame frame
+      (run-with-timer 0.1 nil #'emma|init-ui))))
+
+(add-hook 'after-init-hook #'emma|init-ui)
+(add-hook 'after-make-frame-functions 'doom|init-ui)
+(add-hook 'after-make-frame-functions 'doom|reload-ui-in-daemon)
 
 (provide 'core)
