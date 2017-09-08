@@ -46,3 +46,6 @@
 
 ;; Launch
 (require 'core (concat emma-core-dir "core"))
+(require 'core-lib (concat emma-core-dir "core-lib"))
+
+(emma! evil)

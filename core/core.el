@@ -13,6 +13,19 @@
 ;;   +...      any of the above but part of a module, e.g. `+emacs-lisp|init-hook'
 ;;
 
+(add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/themes"))
+(setq load-path (append load-path (directory-files emma-vendor-dir t "^[^.]" t)))
+(eval-when-compile (require 'use-package))
+
+(use-package autothemer :defer t)
+(use-package dash :defer t)
+(use-package rich-minority :defer t)
+(use-package s :defer t)
+(use-package with-editor :defer t)
+
+(defvar emma-init-ui-hook nil
+  "List of hooks to run when the theme and font is initialized.")
+
 ;; UTF-8 as the default coding system.
 (when (fboundp 'set-charset-priority)
   (set-charset-priority 'unicode))
@@ -24,6 +37,7 @@
 (setq-default buffer-file-coding-system 'utf-8)
 
 (setq-default
+ package-user-dir emma-vendor-dir
  ad-redefinition-action 'accept ;; silence advised function warnings.
  apropos-do-all t               ;; make `apropos' more useful.
  compilation-always-kill t      ;; kill compile process before starting another.
@@ -62,61 +76,72 @@
       initial-scratch-message nil
       mode-line-format nil)
 
-(defun emma-try-run-hook (fn hook)
-  "Runs a hook wrapped in a `condition-case-unless-debug' block."
-  (condition-case-unless-debug ex
-      (if noninteractive
-          (quiet! (funcall fn))
-        (funcall fn))
-    ('error
-     (lwarn hook :error
-            "%s in '%s' -> %s"
-            (car ex) fn (error-message-string ex))))
-  nil)
+;; UI.
+(setq-default
+ bidi-display-reordering nil
+ blink-matching-paren nil
+ cursor-in-non-selected-windows nil
+ display-line-numbers-width 3
+ frame-inhibit-implied-resize t
+ fringe-indicator-alist (delq (assq 'continuation fringe-indicator-alist)
+			      fringe-indicator-alist)
+ highlight-nonselected-windows nil
+ image-animate-loop t
+ indicate-buffer-boundaries nil
+ indicate-empty-lines nil
+ max-mini-window-height 0.3
+ mode-line-default-help-echo nil
+ mouse-yank-at-point t
+ resize-mini-windows 'grow-only
+ show-help-function nil
+ split-width-threshold 160
+ uniquify-buffer-name-style 'forward
+ use-dialog-box nil
+ visible-cursor nil
+ x-stretch-cursor nil
+ jit-lock-defer-time nil
+ jit-lock-stealth-nice 0.1
+ jit-lock-stealth-time 0.2
+ jit-lock-stealth-verbose nil
+ pos-tip-internal-border-width 6
+ pos-tip-border-width 1
+ ring-bell-function #'ignore
+ visible-bell nil)
 
-(defun emma|finalize ()
-  (unless (or emma-init-p noninteractive)
-    (dolist (hook '(emma-init-hook emma-post-init-hook))
-      (run-hook-wrapped hook #'emma-try-run-hook hook))
-    (setq emma-init-p t))
+(fset #'yes-or-no-p #'y-or-n-p)
 
-  (setq gc-cons-threshold 16777216
-        gc-cons-percentage 0.1
-        file-name-handler-alist emma--file-name-handler-alist))
+(defun emma|enable-ui-keystrokes () (setq echo-keystrokes 0.02))
+(defun emma|disable-ui-keystrokes () (setq echo-keystrokes 0))
+(emma|enable-ui-keystrokes)
+(add-hook 'isearch-mode-hook #'emma|disable-ui-keystrokes)
+(add-hook 'isearch-mode-end-hook #'emma|enable-ui-keystrokes)
 
-(defun emma-initialize ()
-  ;; Ensure core folders exist.
-  (unless (file-directory-p emma-local-dir)
-    (make-directory dir t))
+(defvar winner-dont-bind-my-keys t)
+(autoload 'winner-mode "winner" nil t)
+(add-hook 'emma-init-ui-hook #'winner-mode)
 
-  (package-initialize t)
+(setq show-paren-delay 0.1
+      show-paren-highlight-openparen t
+      show-paren-when-point-inside-paren t)
+(add-hook 'emma-init-ui-hook #'show-paren-mode)
 
-  ;; Add load-paths for each vendor package.
-  (setq emma--package-load-path (directory-files emma-vendor-dir t "^[^.]" t)
-        load-path (append load-path emma--package-load-path)))
+(setq-default window-divider-default-places t
+	      window-divider-default-bottom-width 0
+	      window-divider-default-right-width 1)
+(add-hook 'emma-init-ui-hook #'window-divider-mode)
 
+(defun emma|init-ui (&optional frame)
+  (if emma-debug-mode (message "emma|init-ui"))
+  (load-theme 'emma t)
+  (run-hooks 'emma-init-ui-hook))
 
-(defun emma|init ()
-  (message "emma|init")
-  (require 'use-package)
-  (require 'evil)
-  (evil-mode 1)
-  (unless (string-match "^9" (org-version))
-    (warn "org-mode is out of date. org-mode >= 9 expected, got %s instead"
-          (org-version))))
+(defun emma|reload-ui-in-daemon (frame)
+  (when (or (daemonp) (not (display-graphic-p)))
+    (with-selected-frame frame
+      (run-with-timer 0.1 nil #'emma|init-ui))))
 
-;;; Initialize.
-(eval-and-compile
-  (defvar emma--file-name-handler-alist file-name-handler-alist)
-  (setq gc-cons-threshold 402653184
-        gc-cons-percentage 0.6
-        file-name-handler-alist nil)
-
-  (emma-initialize)
-  
-  (add-hook 'after-init-hook 'emma|init)
-  
-  (setq load-path (eval-when-compile load-path)
-        emma--package-load-path (eval-when-compile emma--package-load-path)))
+(add-hook 'after-init-hook #'emma|init-ui)
+(add-hook 'after-make-frame-functions 'doom|init-ui)
+(add-hook 'after-make-frame-functions 'doom|reload-ui-in-daemon)
 
 (provide 'core)
