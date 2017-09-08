@@ -6,6 +6,9 @@
 (defmacro emma! (&rest modules)
   (dolist (m modules)
     (message "emma! %s" m)
-    `(use-package ,m)))
+    (let ((module-path (concat emma-modules-dir (symbol-name m) ".el")))
+      (setq inhibit-message t)
+      (load module-path)
+      (setq inhibit-message nil))))
 
 (provide 'core-lib)
