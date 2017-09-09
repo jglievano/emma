@@ -7,8 +7,6 @@
   (dolist (m modules)
     (message "  emma! %s" m)
     (let ((module-path (concat emma-modules-dir (symbol-name m) ".el")))
-      (setq inhibit-message t)
-      (load module-path)
-      (setq inhibit-message nil))))
+      (load module-path))))
 
 (provide 'core-lib)

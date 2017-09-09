@@ -65,8 +65,18 @@
   :config
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
+(use-package powerline :defer t)
+
+(use-package all-the-icons-spaceline :after spaceline)
+
 (use-package spaceline
-  :after powerline)
+  :after powerline
+  :demand t
+  :config
+  (spaceline-emacs-theme)
+  (if (display-graphic-p)
+      (setq-default mode-line-format
+                    '("%e" (:eval (spaceline-ml-ati))))))
 
 (provide 'ui)
 ;;; ui.el ends here
