@@ -14,13 +14,11 @@
 	evil-mode-line-format 'nil
 	evil-symbol-word-search t
 	shift-select-mode nil)
-  :config
-  (add-hook 'after-init-hook #'evil-mode)
-  (evil-select-search-module 'evil-search-module 'evil-search)
-  (define-key evil-motion-state-map "\\" nil)
+  :config (evil-mode 1))
 
-  (dolist (mode '(tabulated-list-mode view-mode comint-mode term-mode
-				      calendar-mode Man-mode grep-mode))
-    (evil-set-initial-state mode 'emacs))
-  (dolist (mode '(help-mode debugger-mode))
-    (evil-set-initial-state mode 'normal)))
+(use-package evil-leader
+  :after evil
+  :demand t
+  :config
+  (global-evil-leader-mode)
+  (evil-leader/set-leader "<SPC>"))

@@ -1,9 +1,27 @@
-;;; init.el -*- lexical-binding: t; -*-
+;;; init.el --- Where the story begins. -*- lexical-binding: t; -*-
+;;
+;;; Commentary:
 ;;
 ;; Author: Gabriel Lievano <gabe@jglievano.com>
 ;; URL: https://github.com/jglievano/emma.git
 ;;
 ;; Emacs configuration based on hlissner/doom-emacs.
+
+;;                    ____            ____
+;;                  ,'  , `.        ,'  , `.
+;;               ,-+-,.' _ |     ,-+-,.' _ |
+;;            ,-+-, ;   , ||  ,-+-, ;   , ||
+;;    ,---.  ,--.'|'   |  || ,--.'|'   |  || ,--.--.
+;;   /     \|   |  ,', |  |,|   |  ,', |  |,/       \
+;;  /    /  |   | /  | |--' |   | /  | |--',--,  ,-, |
+;; .    ' / |   : |  | ,    |   : |  | ,    \__\/: . .
+;; '   ;   /|   : |  |/     |   : |  |/     ," .--.; |
+;; '   |  / |   | |`-'      |   | |`-'     /  /  ,.  |
+;; |   :    |   ;/          |   ;/        ;  :   .'   \
+;;  \   \  /'---'           '---'         |  ,     .-./
+;;   `----'                                `--`---'
+
+;;; Code:
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -15,11 +33,12 @@
   "Current Emma version.")
 
 (defvar emma-debug-mode (or (getenv "DEBUG") init-file-debug)
-  "If non-nil, all emma functions will be verbose. Set DEBUG=1 or use
---debug-init to enable.")
+  "If non-nil, all emma functions will be verbose.
+
+Set DEBUG=1 or use --debug-init to enable.")
 
 (defvar emma-emacs-dir (expand-file-name user-emacs-directory)
-  "The path to this emacs directory.")
+  "The path to this Emacs directory.")
 
 (defvar emma-core-dir (concat emma-emacs-dir "core/")
   "Core files.")
@@ -40,5 +59,11 @@
 (add-to-list 'load-path emma-core-dir)
 (require 'core)
 
-(emma! ui
-       evil)
+(emma! editor
+       evil
+       navigation
+       projects
+       ui)
+
+(provide 'init)
+;;; init.el ends here

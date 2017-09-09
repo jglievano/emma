@@ -1,7 +1,12 @@
-;;; core/core-ui.el -*- lexical-binding: t; -*-
+;;; ui.el --- UI settings. -*- lexical-binding: t; -*-
 
-;; UI.
+;;; Commentary:
+;; This is were all UI settings are defined for Emma.
+
+;;; Code:
+
 (setq-default
+ column-number-mode t
  bidi-display-reordering nil
  blink-matching-paren nil
  cursor-in-non-selected-windows nil
@@ -44,7 +49,15 @@
   :commands rainbow-delimiters-mode
   :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
+(use-package org-bullets
+  :config (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
 (use-package smart-mode-line
   :demand t
   :config
-  (sml/setup))
+  (setq sml/no-confirm-load-theme t)
+  (sml/setup)
+  (sml/apply-theme 'dark))
+
+(provide 'ui)
+;;; ui.el ends here

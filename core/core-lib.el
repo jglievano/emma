@@ -5,7 +5,7 @@
 
 (defmacro emma! (&rest modules)
   (dolist (m modules)
-    (message "emma! %s" m)
+    (message "  emma! %s" m)
     (let ((module-path (concat emma-modules-dir (symbol-name m) ".el")))
       (setq inhibit-message t)
       (load module-path)

@@ -38,6 +38,25 @@
 	     :commands exec-path-from-shell-initialize
 	     :config (exec-path-from-shell-initialize)))
 
+(setq-default
+ ad-redefinition-action 'accept
+ compilation-always-kill t
+ compilation-ask-about-save nil
+ minibuffer-prompt-properties '(readonly t
+					 point-entered minibuffer-avoid-prompt
+					 face minibuffer-prompt)
+ auto-save-default nil
+ create-lockfiles nil
+ make-backup-files nil
+ abbrev-file-name (concat emma-local-dir "abbrev.el")
+ auto-save-list-file-name (concat emma-local-dir "autosave")
+ backup-directory-alist (list (cons "." (concat emma-local-dir "backup/")))
+ pcache-directory (concat emma-local-dir "pcache/")
+ server-auth-dir (concat emma-local-dir "server/"))
+
+(setq inhibit-startup-message t
+      initial-scratch-message nil)
+
 (load-theme 'emma t)
 
 (set-face-attribute 'default nil
