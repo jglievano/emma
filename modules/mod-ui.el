@@ -1,4 +1,4 @@
-;;; ui.el --- UI settings. -*- lexical-binding: t; -*-
+;;; mod-ui.el --- UI settings. -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; This is were all UI settings are defined for Emma.
@@ -78,5 +78,5 @@
       (setq-default mode-line-format
                     '("%e" (:eval (spaceline-ml-ati))))))
 
-(provide 'ui)
-;;; ui.el ends here
+(provide 'mod-ui)
+;;; mod-ui.el ends here

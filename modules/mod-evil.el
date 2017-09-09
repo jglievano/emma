@@ -1,3 +1,10 @@
+;;; mod-evil.el --- Evil settings. -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;; Loads evil and congiruation.
+
+;;; Code:
+
 (use-package evil
   :demand t
   :init
@@ -22,3 +29,6 @@
   :config
   (global-evil-leader-mode)
   (evil-leader/set-leader "<SPC>"))
+
+(provide 'mod-evil)
+;;; mod-evil.el ends here

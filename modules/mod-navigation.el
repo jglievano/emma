@@ -1,4 +1,4 @@
-;; navigation.el --- Navigation settings. -*- lexical-binding: t; -*-
+;; mod-navigation.el --- Navigation settings. -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; These are settings related to how you navigate with Emma.
@@ -37,5 +37,5 @@
   (which-key-mode)
   :config (setq which-key-idle-delay 0.5))
 
-(provide 'navigation)
-;;; navigation.el ends here
+(provide 'mod=navigation)
+;;; mod-navigation.el ends here

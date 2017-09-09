@@ -61,6 +61,7 @@ Set DEBUG=1 or use --debug-init to enable.")
 
 (emma! editor
        evil
+       keybindings
        navigation
        projects
        ui)

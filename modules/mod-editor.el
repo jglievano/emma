@@ -1,4 +1,4 @@
-;; editor.el --- Editing settings. -*- lexical-binding: t; -*-
+;; mod-editor.el --- Editing settings. -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;; Settings related to editing text and code with Emma.
@@ -25,5 +25,7 @@
   :bind (("C-s" . swiper)
 	 ("C-r" . swiper)))
 
-(provide 'editor)
-;;; editor.el ends here
+(require 'whitespace)
+
+(provide 'mod-editor)
+;;; mod-editor.el ends here
