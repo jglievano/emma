@@ -52,14 +52,12 @@
 (use-package org-bullets
   :config (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-(use-package smart-mode-line
+(use-package all-the-icons :commands all-the-icons-install-fonts)
+
+(use-package neotree
   :demand t
   :config
-  (setq sml/no-confirm-load-theme t)
-  (sml/setup)
-  (sml/apply-theme 'dark))
-
-(use-package all-the-icons :commands all-the-icons-install-fonts)
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
 
 (provide 'ui)
 ;;; ui.el ends here
