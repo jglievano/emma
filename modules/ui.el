@@ -59,5 +59,7 @@
   (sml/setup)
   (sml/apply-theme 'dark))
 
+(use-package all-the-icons :commands all-the-icons-install-fonts)
+
 (provide 'ui)
 ;;; ui.el ends here
