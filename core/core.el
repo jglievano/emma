@@ -31,6 +31,7 @@
 (use-package autothemer :defer t)
 (use-package dash :defer t)
 (use-package f :defer t)
+(use-package font-lock+ :defer t)
 (use-package rich-minority :defer t)
 (use-package s :defer t)
 (use-package with-editor :defer t)
