@@ -65,5 +65,8 @@
   :config
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
+(use-package spaceline
+  :after powerline)
+
 (provide 'ui)
 ;;; ui.el ends here
