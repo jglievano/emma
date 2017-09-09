@@ -1,6 +1,6 @@
-.PHONY: setup
+.PHONY: install
 
-setup:
+install:
 	git submodule update --init --recursive
 	cd vendor/magit/ && make
 	ln -s $(shell pwd)/bin/em ~/bin/em

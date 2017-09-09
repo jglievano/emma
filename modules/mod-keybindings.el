@@ -26,6 +26,7 @@
     "wj" 'windmove-down
     "wk" 'windmove-up
     "wl" 'windmove-right
+    "wq" 'delete-window
     "pf" 'projectile-find-file
     "pp" 'projectile-switch-project))
 

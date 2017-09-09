@@ -55,14 +55,23 @@ Set DEBUG=1 or use --debug-init to enable.")
 (defvar emma-local-dir (concat emma-emacs-dir ".local/")
   "Local files.")
 
+(if (file-exists-p (expand-file-name "~/.homebrew"))
+    (defvar emma-user-local-dir (expand-file-name "~/.homebrew/"))
+  (defvar emma-user-local-dir "/usr/local/"))
+
 ;; Launch
 (add-to-list 'load-path emma-core-dir)
 (require 'core)
 
-(emma! editor
+(emma! coding
+       editor
+       email
        evil
+       git
+       irc
        keybindings
        navigation
+       org
        projects
        ui)
 
