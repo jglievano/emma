@@ -56,8 +56,14 @@
 
 (use-package neotree
   :demand t
+  :after all-the-icons
   :config
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+
+(use-package all-the-icons-dired
+  :after all-the-icons
+  :config
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
 (provide 'ui)
 ;;; ui.el ends here
