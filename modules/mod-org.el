@@ -23,7 +23,7 @@
       org-agenda-compact-blocks t)
 
 (setq org-agenda-files '("~/work/org"
-                         emma-org-dir
+                         "~/Dropbox/org"
                          "~/GoogleDrive/org"
                          "~/GoogleDrive/org/google"
                          "~/GoogleDrive/org/google-mobile-ninjas"))
