@@ -8,7 +8,7 @@
 (use-package evil
   :demand t
   :init
-  (setq evil-want-C-u-jump nil
+  (setq evil-want-C-i-jump nil
         evil-want-C-u-scroll t
         evil-want-visual-char-semil-exclusive t
         evil-want-Y-yank-to-eat t
@@ -23,6 +23,9 @@
         evil-symbol-word-search t
         shift-select-mode nil)
   :config (evil-mode 1))
+
+(use-package evil-org-mode
+  :after evil)
 
 (use-package evil-leader
   :after evil
