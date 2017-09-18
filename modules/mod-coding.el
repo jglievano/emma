@@ -57,6 +57,11 @@
     (c-set-style "drupal"))
   (add-hook 'php-mode-hook #'emma-php-setup))
 
+(use-package python-mode
+  :mode (("\\.py\\'" . python-mode)
+         ("BUILD\\'" . python-mode)
+         ("WORKSPACE\\'" . python-mode)))
+
 (use-package rust-mode
   :mode "\\.rs\\'"
   :init
