@@ -35,6 +35,9 @@
             (lambda ()
               (setq js2-basic-offset 2))))
 
+(use-package lua-mode
+  :mode "\\.lua\\'")
+
 (use-package paredit
   :diminish paredit-mode)
 (autoload 'enable-paredit-mode "paredit"
