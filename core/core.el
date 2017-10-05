@@ -58,7 +58,7 @@
 (setq inhibit-startup-message t
       initial-scratch-message nil)
 
-(load-theme 'emma t)
+(load-theme 'nord t)
 
 (set-face-attribute 'default nil
 		    :height 150

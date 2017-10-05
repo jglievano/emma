@@ -49,9 +49,6 @@
   :commands rainbow-delimiters-mode
   :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-(use-package org-bullets
-  :config (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-
 (use-package all-the-icons :commands all-the-icons-install-fonts)
 
 (use-package neotree
