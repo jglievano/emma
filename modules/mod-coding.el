@@ -78,9 +78,10 @@
 
 (use-package typescript-mode
   :mode "\\.ts\\'"
-  :init
+  :config
   (defun emma-typescript-setup ()
-    (setq typescript-indent-level 2)))
+    (setq typescript-indent-level 2))
+  (add-hook 'typescript-mode-hook 'emma-typescript-setup))
 
 (use-package web-mode
   :mode (("\\.phtml\\'" . web-mode)
