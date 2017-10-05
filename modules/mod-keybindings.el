@@ -22,6 +22,8 @@
     "ew" 'whitespace-mode
     "ff" 'ido-find-file
     "gs" 'magit-status
+    "wJ" 'split-window-below
+    "wL" 'split-window-right
     "wh" 'windmove-left
     "wj" 'windmove-down
     "wk" 'windmove-up
