@@ -76,6 +76,12 @@
 
 (use-package toml-mode :mode "\\.toml\\'")
 
+(use-package typescript-mode
+  :mode "\\.ts\\'"
+  :init
+  (defun emma-typescript-setup ()
+    (setq typescript-indent-level 2)))
+
 (use-package web-mode
   :mode (("\\.phtml\\'" . web-mode)
          ("\\.tpl\\.php\\'" . web-mode)
