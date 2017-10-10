@@ -28,7 +28,7 @@
 (eval-when-compile (require 'use-package))
 
 (use-package async :defer t)
-(use-package autothemer :defer t)
+;(use-package autothemer :defer t)
 (use-package dash :defer t)
 (use-package f :defer t)
 (use-package font-lock+ :defer t)
@@ -58,7 +58,7 @@
 (setq inhibit-startup-message t
       initial-scratch-message nil)
 
-(load-theme 'nord t)
+(load-theme 'emma t)
 
 (set-face-attribute 'default nil
 		    :height 150

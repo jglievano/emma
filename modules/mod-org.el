@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(defvar emma-org-dir (expand-file-name "~/Dropbox/org/"))
+(defvar emma-org-dir (expand-file-name "~/word/org/"))
 (defvar emma-org-refile (concat emma-org-dir "refile.org"))
 
 (global-set-key "\C-cl" 'org-store-link)
@@ -23,10 +23,7 @@
       org-agenda-compact-blocks t)
 
 (setq org-agenda-files '("~/work/org"
-                         "~/Dropbox/org"
-                         "~/GoogleDrive/org"
-                         "~/GoogleDrive/org/google"
-                         "~/GoogleDrive/org/google-mobile-ninjas"))
+                         "~/work/org/google/mobile-ninjas"))
 
 (setq org-todo-keywords
       '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
