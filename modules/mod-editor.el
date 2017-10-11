@@ -14,6 +14,7 @@
  sh-indentation 2)
 
 (use-package company
+  :diminish company-mode
   :config (global-company-mode))
 
 (use-package flycheck
