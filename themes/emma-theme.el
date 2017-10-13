@@ -7,10 +7,6 @@
 
 (deftheme emma "Official theme for Emma. Based on gruvbox")
 
-;; 0 = 
-;;
-;;
-
 ;;; Color Constants
 (let ((class '((class color) (min-colors 89)))
       (emma0 (if (display-graphic-p) "#282828" "#282828"))
@@ -56,8 +52,8 @@
     `(error ((,class (:foreground ,emma11 :weight bold))))
     `(escape-glyph ((,class (:foreground ,emma12))))
     `(font-lock-builtin-face ((,class (:foreground ,emma9))))
-    `(font-lock-comment-face ((,class (:foreground ,emma3))))
-    `(font-lock-comment-delimiter-face ((,class (:foreground ,emma3))))
+    `(font-lock-comment-face ((,class (:foreground ,emma3 :slant italic))))
+    `(font-lock-comment-delimiter-face ((,class (:foreground ,emma3 :slant italic))))
     `(font-lock-constant-face ((,class (:foreground ,emma9))))
     `(font-lock-doc-face ((,class (:foreground ,emma3))))
     `(font-lock-function-name-face ((,class (:foreground ,emma8))))
