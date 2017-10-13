@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(defvar emma-org-dir (expand-file-name "~/word/org/"))
+(defvar emma-org-dir (expand-file-name "~/work/org/"))
 (defvar emma-org-refile (concat emma-org-dir "refile.org"))
 
 (global-set-key "\C-cl" 'org-store-link)
@@ -23,16 +23,20 @@
       org-agenda-compact-blocks t)
 
 (setq org-agenda-files '("~/work/org"
-                         "~/work/org/google/mobile-ninjas"))
+                         "~/work/org/google/mobile-ninjas"
+                         "~/.t"))
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+      '((sequence "TO(t)" "NEXT(n)" "|" "DONE(d)")
+        (sequence "RE(r)" "|" "FORGET(f)")
         (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING")))
 
 (setq org-todo-keyword-faces
-      '(("TODO" :foreground "red" :weight bold)
+      '(("TO" :foreground "red" :weight bold)
         ("NEXT" :foreground "blue" :weight bold)
         ("DONE" :foreground "forest green" :weight bold)
+        ("RE" :foreground "red" :weight bold)
+        ("FORGET" :foreground "forest green" :weight bold)
         ("WAITING" :foreground "orange" :weight bold)
         ("HOLD" :foreground "magenta" :weight bold)
         ("CANCELLED" :foreground "forest green" :weight bold)
@@ -44,13 +48,13 @@
         ("WAITING" ("WAITING" . t))
         ("HOLD" ("WAITING") ("HOLD" . t))
         (done ("WAITING") ("HOLD"))
-        ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+        ("TO" ("WAITING") ("CANCELLED") ("HOLD"))
         ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
         ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
 
 (setq org-capture-templates
       '(("t" "Todo" entry (file emma-org-refile)
-         "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+         "* TO %?\n%U\n%a\n" :clock-in t :clock-resume t)
         ("r" "Respond" entry (file emma-org-refile)
          "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
         ("n" "Note" entry (file emma-org-refile)
@@ -58,7 +62,7 @@
         ("j" "Journal" entry (file+datetree emma-org-refile)
          "* %?\n%U\n" :clock-in t :clock-resume t)
         ("w" "org-protocol" entry (file emma-org-refile)
-         "* TODO Review %c\n%U\n" :immediate-finish t)
+         "* TO Review %c\n%U\n" :immediate-finish t)
         ("m" "Meeting" entry (file emma-org-refile)
          "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
         ("p" "Phone call" entry (file emma-org-refile)
